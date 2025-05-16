@@ -1,0 +1,18 @@
+#songs-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.select-song-container {
+    display: flex;
+    gap: 0.5em;
+}
+
+.select-song-container > ion-item {
+    flex: 1;
+}
+
+.select-song-container > button {
+    flex: 0.2;
+}

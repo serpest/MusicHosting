@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>SongPlayer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">SongPlayer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <h1>Song player</h1>
+    @if (isExisting) {
+      <div class="song">
+          <div class="song-data">
+              <img class="song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <div class="song-details">
+                  <h2>{{ song?.title }}</h2>
+                  <p><b>Artist:</b> {{ song?.artist }}</p>
+                  <p><b>Album:</b> {{ song?.album }}</p>
+                  <p><b>Genre:</b> {{ song?.genre }}</p>
+                  <p><b>Release year:</b> {{ song?.releaseYear }}</p>
+              </div>
+          </div>
+          <div id="controls">
+              <span>{{ formatTime(currentTime) || "0:00" }} / {{ formatTime(duration) || "0:00" }}</span>
+              <input type="range" id="progress-bar" min="0" [max]="duration" [value]="currentTime" (input)="seek($event)" />
+              <div id="control-buttons-container">
+                  @if (playingSongs.length > 1) {
+                    <button (click)="playPreviousSong()">Previous</button>
+                  }
+                  <button (click)="playSong()">Play</button>
+                  <button (click)="pauseSong()">Pause</button>
+                  <button (click)="restartSong()">Restart</button>
+                  @if (playingSongs.length > 1) {
+                    <button (click)="playNextSong()">Next</button>
+                  }
+              </div>
+          </div>
+      </div>
+    } @else {
+      <p id="no-song-messsage">Song not found</p>
+    }
+    @if (playingSongs.length > 0) {
+      <h2>Playing songs</h2>
+      <ol>
+        @for (s of playingSongs; track s.id) {
+          <li class="playing-song" [ngClass]="{'playing-song-active': s.id == song?.id}">
+            <div class="playing-song-data">
+              <img class="playing-song-image" src="http://localhost:3000/songs/id/{{ s.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <div class="playing-song-details">
+                  <h2>{{ s.title }}</h2>
+                  <p><b>Artist:</b> {{ s.artist }}</p>
+                  <p><b>Album:</b> {{ s.album }}</p>
+              </div>
+            </div>
+                <button (click)="playAnotherSong(s.id)">Play</button>
+          </li>
+        }
+      </ol>
+    }  
+  </ion-content>
+</ion-content>

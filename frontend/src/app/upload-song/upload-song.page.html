@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>UploadSong</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">UploadSong</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <h1>Upload a new song</h1>
+    <form id="song-form" [formGroup]="songForm">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" formControlName="title" required />
+      @if (songForm.get('title')?.invalid && songForm.get('title')?.touched) {
+          <p class="error">Title length should be between 1 and 100 characters</p>
+      }
+      <label for="artist">Artist</label>
+      <input type="text" id="artist" name="artist" formControlName="artist" required />
+      @if (songForm.get('artist')?.invalid && songForm.get('artist')?.touched) {
+          <p class="error">Artist length should be between 1 and 100 characters</p>
+      }
+      <label for="album">Album</label>
+      <input type="text" id="album" name="album" formControlName="album" required />
+      @if (songForm.get('album')?.invalid && songForm.get('album')?.touched) {
+          <p class="error">Album length should be between 1 and 100 characters</p>
+      }
+      <label for="genre">Genre</label>
+      <input type="genre" id="genre" name="genre" formControlName="genre" required />
+      @if (songForm.get('genre')?.invalid && songForm.get('genre')?.touched) {
+          <p class="error">Genre length should be between 1 and 100 characters</p>
+      }
+      <label for="releaseYear">Release year</label>
+      <input type="number" id="releaseYear" name="releaseYear" formControlName="releaseYear" required />
+      @if (songForm.get('releaseYear')?.invalid && songForm.get('releaseYear')?.touched) {
+          <p class="error">Release year should be an integer between 0 and 2100</p>
+      }
+      <label for="audioPath">Audio</label>
+      <input type="file" id="audioPath" name="audioPath" accept=".mp3" formControlName="audioPath" (change)="audioFileChange($event)" required />
+      @if (songForm.get('audioPath')?.invalid && songForm.get('audioPath')?.touched) {
+          <p class="error">The file format should be MP3</p>
+      }
+      <label for="albumPicturePath">Album picture</label>
+      <input type="file" id="albumPicturePath" name="albumPicturePath" accept=".png" formControlName="albumPicturePath" (change)="albumPictureFileChange($event)" required />
+      @if (songForm.get('albumPicturePath')?.invalid && songForm.get('albumPicturePath')?.touched) {
+          <p class="error">The file format should be PNG</p>
+      }
+      <button type="submit" (click)="submit()" [disabled]="songForm.invalid">Submit</button>
+    </form>
+  </ion-content>
+</ion-content>

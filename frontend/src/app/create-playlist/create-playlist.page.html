@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>CreatePlaylist</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">CreatePlaylist</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <h1>Create a new playlist</h1>
+    <form id="playlist-form" [formGroup]="playlistForm">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" formControlName="title" required />
+      @if (playlistForm.get('title')?.invalid && playlistForm.get('title')?.touched) {
+          <p class="error">Title length should be between 1 and 100 characters</p>
+      }
+      <button type="submit" (click)="submit()" [disabled]="playlistForm.invalid">Submit</button>
+    </form>
+  </ion-content>
+</ion-content>

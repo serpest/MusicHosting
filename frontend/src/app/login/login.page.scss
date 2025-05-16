@@ -1,0 +1,27 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+input {
+    padding: 0.5em;
+}
+
+button {
+    padding: 1em;
+}
+
+.error {
+    color: red;
+    margin-top: 0;
+}
+
+#switch-to-register {
+    margin-top: 2em;
+    text-align: center;
+}
+
+#switch-to-register > span {
+    margin-right: 1em;
+}

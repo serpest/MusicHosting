@@ -1,0 +1,10 @@
+<ol>
+  @for (playlist of playlists(); track playlist.id) {
+    <li class="playlist">
+      <h2>{{ playlist.title }}</h2>
+      <button (click)="open(playlist.id)">Open</button>
+    </li>
+  } @empty {
+    <li id="no-playlists-messsage">No playlists available</li>
+  }
+</ol>

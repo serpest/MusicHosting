@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>SearchSongs</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">SearchSongs</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <h1>Search for songs</h1>
+    <form>
+        <input type="text" id="search" [(ngModel)]="searchQuery" name="search" />
+        <button (click)="search()">Search</button>
+    </form>
+    <h2>Found songs</h2>
+    <app-song-list [songs]="songs"></app-song-list>
+  </ion-content>
+</ion-content>

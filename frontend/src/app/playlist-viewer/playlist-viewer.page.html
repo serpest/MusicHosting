@@ -1,0 +1,62 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>PlaylistViewer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">PlaylistViewer</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <h1>Playlist viewer</h1>
+    @if (this.isExisting) {
+      <div id="playlist-data">
+        <div>
+          <h2>{{ playlist?.title }}</h2>
+          <p><b>Creator:</b> {{ playlistCreator }}</p>
+        </div>
+      </div>
+      @if (this.isMine) {
+        <h2>Playlist actions</h2>
+        <div id="playlist-actions">
+          <button (click)="deletePlaylist()">Delete playlist</button>
+          <div class="select-song-container">
+            <ion-item>
+              <ion-label>Select a song to add</ion-label>
+              <ionic-selectable
+                [(ngModel)]="selectedSongToAdd"
+                [itemValueField]="'id'"
+                [itemTextField]="'title'"
+                [items]="allSongs"
+                [canSearch]="true"
+              >
+              </ionic-selectable>
+            </ion-item>
+            <button (click)="addSongToPlaylist()">Add song</button>
+          </div>
+          <div class="select-song-container">
+            <ion-item>
+              <ion-label>Select a song to remove</ion-label>
+              <ionic-selectable
+                [(ngModel)]="selectedSongToRemove"
+                [itemValueField]="'id'"
+                [itemTextField]="'title'"
+                [items]="playlist?.songs!"
+                [canSearch]="true"
+              >
+              </ionic-selectable>
+            </ion-item>
+            <button (click)="removeSongFromPlaylist()">Remove song</button>
+          </div>
+        </div>
+      }
+      <h2>Playlist songs</h2>
+      <app-song-list [songs]="playlist?.songs"></app-song-list>    
+    } @else {
+      <p id="no-playlist-messsage">Playlist not found</p>
+    }
+  </ion-content>
+</ion-content>

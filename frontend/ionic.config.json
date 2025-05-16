@@ -1,0 +1,7 @@
+{
+  "name": "music-hosting",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
