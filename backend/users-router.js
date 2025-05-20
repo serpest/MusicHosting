@@ -88,6 +88,68 @@ router.post('/login', (req, res, next) => {
     });
 });
 
+router.post('/forgot-password', (req, res, next) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Find user
+    usersDb.get('SELECT id, email FROM users WHERE email = ?', [email], (err, user) => {
+        if (err)
+            return next(err);
+        if (!user)
+            return res.status(404).json({ error: 'User not found' });
+        
+        // Generate OTP
+        const otp = Math.floor(100_000 + Math.random() * 900_000).toString();
+        const otpExpiry = Date.now() + 15 * 60 * 1000; // 15 minutes expiry
+
+        // Update OTP in database
+        usersDb.run('UPDATE users SET otp = ?, otp_expiry = ? WHERE id = ?', [otp, otpExpiry, user.id], (err) => {
+            if (err)
+                return next(err);
+            sendEMail(email, 'Password reset for MusicHosting', `Your OTP is ${otp}`);
+            res.status(200).json({ message: 'OTP sent to your email' });
+        });
+    });
+});
+
+router.post('/reset-password', (req, res, next) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ error: 'Email, OTP and new password are required' });
+    }
+
+    // Find user
+    usersDb.get('SELECT id, email, otp, otp_expiry FROM users WHERE email = ?', [email], (err, user) => {
+        if (err)
+            return next(err);
+        if (!user)
+            return res.status(404).json({ error: 'User not found' });
+        
+        // Check OTP
+        if (user.otp !== otp || Date.now() > user.otp_expiry) {
+            return res.status(401).json({ error: 'Invalid or expired OTP' });
+        }
+        
+        // Hash new password
+        bcrypt.hash(newPassword, 10, (err, hash) => {
+            if (err)
+                return next(err);
+            
+            // Update password and clear OTP
+            usersDb.run('UPDATE users SET password = ?, otp = NULL, otp_expiry = NULL WHERE id = ?', [hash, user.id], (err) => {
+                if (err)
+                    return next(err);
+                res.status(200).json({ message: 'Password reset successfully' });
+            });
+        });
+    });
+});
+
 router.post('/change-password', (req, res, next) => {
     const { email, oldPassword, newPassword } = req.body;
     

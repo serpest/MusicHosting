@@ -7,7 +7,9 @@ usersDb.serialize(() => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         email TEXT NOT NULL UNIQUE,
         name TEXT NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        otp TEXT,
+        otp_expiry INTEGER
      )`
   );
 });
