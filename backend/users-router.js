@@ -7,6 +7,8 @@ const usersDb = require('./users-db');
 
 const router = express.Router();
 
+const baseEMailURL = 'https://bose.com/'; // TODO: Remove this
+
 router.get('/', (_req, res, next) => { // Useful for debugging, but dangerous
     usersDb.all('SELECT id, email, name FROM users', (err, rows) => {
         if (err)
