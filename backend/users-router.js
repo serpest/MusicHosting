@@ -2,12 +2,11 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 
 const {authenticateToken, signToken} = require('./token-utils');
+const {sendEMail} = require('./email-utils');
 
 const usersDb = require('./users-db');
 
 const router = express.Router();
-
-const baseEMailURL = 'https://bose.com/'; // TODO: Remove this
 
 router.get('/', (_req, res, next) => { // Useful for debugging, but dangerous
     usersDb.all('SELECT id, email, name FROM users', (err, rows) => {
@@ -58,6 +57,7 @@ router.post('/register', (req, res, next) => {
             usersDb.run('INSERT INTO users (email, name, password) VALUES (?, ?, ?)', [email, name, hash], function(err) {
                 if (err)
                     return next(err);
+                sendEMail(email, 'Welcome to MusicHosting', `Hello ${name},\nThank you for registering!`);
                 res.status(201).json({ message: 'User created successfully', userId: this.lastID });
             });
         });
