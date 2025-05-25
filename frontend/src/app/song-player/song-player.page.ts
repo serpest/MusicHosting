@@ -1,11 +1,13 @@
 import { Component, input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Song } from '../song.model';
 import { SongService } from '../song.service';
 import { PlayingSongsService } from '../playing.songs.service';
+import { UserService } from '../user.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-song-player',
@@ -14,7 +16,7 @@ import { PlayingSongsService } from '../playing.songs.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class SongPlayerPage implements OnDestroy {
+export class SongPlayerPage implements OnDestroy, ViewWillEnter {
 
   song: Song | undefined;
   audio: HTMLAudioElement | undefined;
@@ -23,25 +25,48 @@ export class SongPlayerPage implements OnDestroy {
   isExisting: boolean = false;
   playingSongs: Song[] = [];
 
-  constructor(private route: ActivatedRoute, private songService: SongService, private router: Router, private playingSongsService: PlayingSongsService) {
-    this.route.params.subscribe(data => {
-      this.songService.getSongById(data['songId']).subscribe((songData: any) => {
-        this.isExisting = true;
-        this.song = Song.fromJson(songData.song);
-        this.audio = new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`);
-        this.audio.addEventListener('timeupdate', () => {
-          if (this.playingSongs.length > 1 && this.audio && this.audio.currentTime > 0 &&
-              this.audio.currentTime == this.audio.duration) {
-            this.playNextSong();
-          }
-          this.currentTime = this.audio?.currentTime || 0;
+  constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService, private router: Router,
+              private playingSongsService: PlayingSongsService, private alertController: AlertController) {}
+
+  ionViewWillEnter() {
+    this.userService.validateToken().subscribe({
+      next: () => {
+        this.route.params.subscribe(data => {
+          this.songService.getSongById(data['songId']).subscribe((songData: any) => {
+            this.isExisting = true;
+            this.song = Song.fromJson(songData.song);
+            this.audio = new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`);
+            this.audio.addEventListener('timeupdate', () => {
+              if (this.playingSongs.length > 1 && this.audio && this.audio.currentTime > 0 &&
+                  this.audio.currentTime == this.audio.duration) {
+                this.playNextSong();
+              }
+              this.currentTime = this.audio?.currentTime || 0;
+            });
+            this.audio.addEventListener('loadedmetadata', () => {
+              this.duration = this.audio?.duration || 0;
+            });
+            this.playSong();
+          });
+          this.playingSongs = this.playingSongsService.getPlayingSongs();
         });
-        this.audio.addEventListener('loadedmetadata', () => {
-          this.duration = this.audio?.duration || 0;
+      },
+      error: () => {
+        this.alertController.create({
+          header: 'Not logged in',
+          message: 'You need to be logged in to access this page',
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigate(['auth']);
+              }
+            }
+          ]
+        }).then(alert => {
+          alert.present();
         });
-        this.playSong();
-      });
-      this.playingSongs = this.playingSongsService.getPlayingSongs();
+      }
     });
   }
 

@@ -72,7 +72,16 @@ export const routes: Routes = [
     redirectTo: 'auth/login'
   },
   {
+    path: 'auth/reset-password',
+    loadComponent: () => import('./reset-password/reset-password.page').then( m => m.ResetPasswordPage)
+  },
+  {
+    path: 'auth/forgot-password',
+    loadComponent: () => import('./forgot-password/forgot-password.page').then( m => m.ForgotPasswordPage)
+  },
+  {
     path: '**',
     redirectTo: 'page-not-found'
   },
+
 ];

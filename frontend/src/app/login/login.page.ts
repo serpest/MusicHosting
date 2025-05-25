@@ -79,4 +79,8 @@ export class LoginPage implements ViewWillEnter {
     this.router.navigate(['auth', 'register']);
   }
 
+  switchToForgotPassword() {
+    this.router.navigate(['auth', 'forgot-password']);
+  }
+
 }

@@ -29,6 +29,14 @@ export class UserService {
     return this.http.post(`${this.baseUrl}/users/delete-account`, { email, password });
   }
 
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/forgot-password`, { email });
+  }
+
+  resetPassword(email: string, otp: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/reset-password`, { email, otp, newPassword });
+  }
+
   validateToken(): Observable<any> {
     return this.http.get(`${this.baseUrl}/users/validate-token`);
   }

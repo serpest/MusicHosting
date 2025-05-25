@@ -22,7 +22,7 @@ export class CreatePlaylistPage implements ViewWillEnter {
     title: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)])
   });
 
-  constructor(private userService: UserService, private playlistService: PlaylistService, private router: Router, public alertController: AlertController) {}
+  constructor(private userService: UserService, private playlistService: PlaylistService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
     this.userService.validateToken().subscribe({
