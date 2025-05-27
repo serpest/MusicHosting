@@ -24,6 +24,7 @@
                   <p><b>Release year:</b> {{ song?.releaseYear }}</p>
               </div>
           </div>
+          <!-- TODO: Adapt for mobile -->
           <div id="controls">
               <span>{{ formatTime(currentTime) || "0:00" }} / {{ formatTime(duration) || "0:00" }}</span>
               <input type="range" id="progress-bar" min="0" [max]="duration" [value]="currentTime" (input)="seek($event)" />

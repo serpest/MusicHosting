@@ -44,3 +44,29 @@ li {
     font-size: medium;
     border-style: none;
 }
+
+@media screen and (max-width: 800px) {
+    .song {
+        flex-direction: column;
+    }
+
+    .song > button {
+        height: 5em;
+        margin-top: 1em;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .song-data {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .song > button {
+        margin-top: 0;
+    }
+
+    .song-image {
+        margin-right: 0;
+    }
+}

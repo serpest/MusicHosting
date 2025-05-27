@@ -58,14 +58,6 @@
     text-align: center;
 }
 
-@media screen and (max-width: 999px) {
-
-    .song {
-        flex-direction: column;
-    }
-
-}
-
 ol {
     padding: 0;
 }
@@ -105,7 +97,44 @@ li {
 .playing-song > button {
     width: 7em;
     height: 7em;
+    min-width: 7em;
     border-radius: 1em;
     font-size: medium;
     border-style: none;
+}
+
+@media screen and (max-width: 1300px) {
+    .song {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .playing-song-data {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .playing-song-image {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .song-data {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .song-image {
+        margin-right: 0;
+    }
+
+    .playing-song {
+        flex-direction: column;
+    }
+
+    .playing-song-data {
+        align-items: center;
+    }
 }

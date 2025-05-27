@@ -2,6 +2,7 @@ import { Component, input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Song } from '../song.model';
 import { PlayingSongsService } from '../playing.songs.service';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-song-list',

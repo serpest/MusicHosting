@@ -1,7 +1,7 @@
 import { Component, input, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter, ViewWillLeave } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Song } from '../song.model';
 import { SongService } from '../song.service';
@@ -16,7 +16,7 @@ import { AlertController } from '@ionic/angular';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class SongPlayerPage implements OnDestroy, ViewWillEnter {
+export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
 
   song: Song | undefined;
   audio: HTMLAudioElement | undefined;
@@ -70,7 +70,7 @@ export class SongPlayerPage implements OnDestroy, ViewWillEnter {
     });
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     this.pauseSong();
   }
 
@@ -111,6 +111,7 @@ export class SongPlayerPage implements OnDestroy, ViewWillEnter {
   }
 
   playAnotherSong(songId: number) {
+    this.pauseSong();
     this.router.navigate(['/song-player', songId]);
   }
 
