@@ -1,0 +1,30 @@
+<ion-content class="ion-padding">
+    <h1>Song player</h1>
+    @if (this.playingSongsService.isPlaying) {
+      <div class="song">
+          <div class="song-data">
+              <img class="song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <div class="song-details">
+                  <h2>{{ song?.title }}</h2>
+                  <p><b>Artist:</b> {{ song?.artist }}</p>
+              </div>
+          </div>
+          <!-- TODO: Adapt for mobile -->
+          <div id="controls">
+              <div id="control-buttons-container">
+                  @if (isNotFirstSong()) {
+                    <button (click)="playPreviousSong()">Previous</button>
+                  }
+                  <button (click)="playSong()">Play</button>
+                  <button (click)="pauseSong()">Pause</button>
+                  <button (click)="restartSong()">Restart</button>
+                  @if (playingSongs.length > 1) {
+                    <button (click)="playNextSong()">Next</button>
+                  }
+              </div>
+          </div>
+      </div>
+    } @else {
+      <p id="no-song-messsage">Song not found</p>
+    }
+  

@@ -29,7 +29,7 @@
               <span>{{ formatTime(currentTime) || "0:00" }} / {{ formatTime(duration) || "0:00" }}</span>
               <input type="range" id="progress-bar" min="0" [max]="duration" [value]="currentTime" (input)="seek($event)" />
               <div id="control-buttons-container">
-                  @if (playingSongs.length > 1) {
+                  @if (isNotFirstSong()) {
                     <button (click)="playPreviousSong()">Previous</button>
                   }
                   <button (click)="playSong()">Play</button>

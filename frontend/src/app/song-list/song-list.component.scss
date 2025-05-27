@@ -40,10 +40,11 @@ li {
 .song > button {
     width: 13em;
     height: 13em;
-    border-radius: 1em;
+    border-radius: 10em;
     font-size: medium;
     border-style: none;
 }
+
 
 @media screen and (max-width: 800px) {
     .song {
@@ -69,4 +70,16 @@ li {
     .song-image {
         margin-right: 0;
     }
+}
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 40;
+    font-size: 5em; // Increase the icon size
+}
+
+.song > button:hover {
+    background-color: #d3d3d3;
 }

@@ -1,4 +1,4 @@
-import { Component, input, OnDestroy } from '@angular/core';
+import { Component, input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter, ViewWillLeave } from '@ionic/angular/standalone';
@@ -31,25 +31,11 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   ionViewWillEnter() {
     this.userService.validateToken().subscribe({
       next: () => {
+        // Sottoscrivi una sola volta ai parametri della route
         this.route.params.subscribe(data => {
-          this.songService.getSongById(data['songId']).subscribe((songData: any) => {
-            this.isExisting = true;
-            this.song = Song.fromJson(songData.song);
-            this.audio = new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`);
-            this.audio.addEventListener('timeupdate', () => {
-              if (this.playingSongs.length > 1 && this.audio && this.audio.currentTime > 0 &&
-                  this.audio.currentTime == this.audio.duration) {
-                this.playNextSong();
-              }
-              this.currentTime = this.audio?.currentTime || 0;
-            });
-            this.audio.addEventListener('loadedmetadata', () => {
-              this.duration = this.audio?.duration || 0;
-            });
-            this.playSong();
-          });
-          this.playingSongs = this.playingSongsService.getPlayingSongs();
+          this.loadSong(data['songId']);
         });
+        this.playingSongs = this.playingSongsService.getPlayingSongs();
       },
       error: () => {
         this.alertController.create({
@@ -70,12 +56,36 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
     });
   }
 
+
+  // Sposta qui la logica di caricamento della canzone
+  loadSong(songId: number) {
+    this.cleanupAudio(); // Pulisci l'audio precedente se esiste
+    this.songService.getSongById(songId).subscribe((songData: any) => {
+      this.isExisting = true;
+      this.song = Song.fromJson(songData.song);
+      this.audio = new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`);
+      this.audio.addEventListener('timeupdate', () => {
+        if (this.playingSongs.length > 1 && this.audio && this.audio.currentTime > 0 &&
+            this.audio.currentTime == this.audio.duration) {
+          this.playNextSong();
+        }
+        this.currentTime = this.audio?.currentTime || 0;
+      });
+      this.audio.addEventListener('loadedmetadata', () => {
+        this.duration = this.audio?.duration || 0;
+      });
+      this.playSong();
+    });
+  }
+
   ionViewWillLeave() {
     this.pauseSong();
   }
 
   playSong() {
-    if (this.audio) {
+    if (this.audio && !this.isAudioPlaying()) {
+      this.playingSongsService.isPlaying = true;
+      this.playingSongsService.currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id)
       this.audio.play().catch((error) => {
         console.error('[ERROR] Error playing audio:', error);
       });
@@ -85,6 +95,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   pauseSong() {
     if (this.audio) {
       this.audio.pause();
+      console.log('Audio paused');
     }
   }
 
@@ -104,7 +115,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   seek($event: Event) {
     const target = $event.target as HTMLInputElement;
     const seekTime = parseFloat(target.value);
-    if (this.audio) {
+    if (this.audio && !isNaN(seekTime) && seekTime >= 0 && seekTime <= this.duration && this.isAudioPlaying()) {
       this.audio.currentTime = seekTime;
       this.currentTime = seekTime;
     }
@@ -117,6 +128,10 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
 
   playPreviousSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
+    if (this.audio) {
+        this.audio.pause();
+        this.audio = undefined;
+    }
     if (currentIndex > 0) {
       this.pauseSong();
       this.playAnotherSong(this.playingSongs[currentIndex - 1].id);
@@ -125,10 +140,32 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
 
   playNextSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
+    if (this.audio) {
+        this.audio.pause();
+        this.audio = undefined;
+    }
     if (currentIndex < this.playingSongs.length - 1) {
       this.pauseSong()
       this.playAnotherSong(this.playingSongs[currentIndex + 1].id);
     }
+  }
+
+  isNotFirstSong(): boolean {
+    if (!this.song) return false;
+    return this.playingSongs.length > 1 && this.playingSongs.findIndex(song => song.id === this.song?.id) > 0;
+  }
+
+  private cleanupAudio() {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.src = '';
+      this.audio.load();
+      this.audio = undefined;
+    }
+  }
+
+  isAudioPlaying(): boolean {
+    return !!this.audio && !this.audio.paused && !this.audio.ended && this.audio.currentTime > 0;
   }
 
 }
