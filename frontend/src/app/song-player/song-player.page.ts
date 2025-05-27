@@ -85,7 +85,9 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
   }
 
   ionViewWillLeave() {
-    this.playingSongsService.setIsMiniPlayerDisplayed(true);
+    if (this.isExisting) {
+        this.playingSongsService.setIsMiniPlayerDisplayed(true);
+    }
   }
 
   playSong() {
