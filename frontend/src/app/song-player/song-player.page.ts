@@ -118,6 +118,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   playPreviousSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
     if (currentIndex > 0) {
+      this.pauseSong();
       this.playAnotherSong(this.playingSongs[currentIndex - 1].id);
     }
   }
@@ -125,6 +126,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   playNextSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
     if (currentIndex < this.playingSongs.length - 1) {
+      this.pauseSong()
       this.playAnotherSong(this.playingSongs[currentIndex + 1].id);
     }
   }
