@@ -6,6 +6,7 @@ import { UserService } from '../user.service';
 import { TokenService } from '../token.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { PlayingSongsService } from '../playing.songs.service';
 
 @Component({
   selector: 'app-manage-account',
@@ -16,7 +17,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class ManageAccountPage implements ViewWillEnter {
 
-  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
+  constructor(private playingSongsService: PlayingSongsService, private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
     this.userService.validateToken().subscribe({
@@ -40,6 +41,7 @@ export class ManageAccountPage implements ViewWillEnter {
   }
 
   logout() {
+    this.playingSongsService.setIsMiniPlayerDisplayed(false);
     this.tokenService.removeToken();
     this.alertController.create({
       header: 'Success',

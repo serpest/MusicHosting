@@ -45,6 +45,20 @@ li {
     border-style: none;
 }
 
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 40;
+    font-size: 5em;
+}
+
+
+.song > button:hover {
+    background-color: #d3d3d3;
+}
+
 @media screen and (max-width: 800px) {
     .song {
         flex-direction: column;

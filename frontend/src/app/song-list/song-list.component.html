@@ -11,7 +11,11 @@
             <p><b>Release year:</b> {{ song.releaseYear }}</p>
         </div>
       </div>
-          <button (click)="play(song.id)">Play</button>
+        <button (click)="play(song.id)" title="Play" class="icon-button">
+            <span class="material-symbols-outlined">
+              play_arrow
+            </span>
+        </button>
     </li>
   } @empty {
     <li id="no-songs-messsage">No songs available</li>
