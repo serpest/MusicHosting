@@ -38,11 +38,12 @@ li {
 }
 
 .song > button {
-    width: 13em;
-    height: 13em;
-    border-radius: 1em;
+    width: 10em;
+    height: 10em;
+    border-radius: 5em;
     font-size: medium;
     border-style: none;
+    
 }
 
 @media screen and (max-width: 800px) {
@@ -69,4 +70,18 @@ li {
     .song-image {
         margin-right: 0;
     }
+}
+
+.play-icon {
+  font-size: 5rem; /* or any size you prefer */
+  vertical-align: middle;
+}
+
+.play-button:hover .play-icon {
+    color: black; /* Change to your desired hover color */
+}
+
+.play-button:hover {
+    background-color: #f0f0f0; /* Change to your desired hover background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
 }

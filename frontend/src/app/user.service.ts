@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 
 @Injectable({
@@ -10,6 +10,9 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   private baseUrl = 'http://localhost:3000';
+
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  isLoggedIn$ = this.loggedIn.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -41,4 +44,22 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/users/validate-token`);
   }
 
+  setLoggedIn(status: boolean) {
+    this.loggedIn.next(status);
+  }
+
+  checkAuth() {
+    this.validateToken().subscribe({
+      next: () => this.setLoggedIn(true),
+      error: () => this.setLoggedIn(false)
+    });
+  }
+
+  changeName(newName: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/users/change-name`, { name: newName });
+  }
+
+  getCurrentUser(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/users/me`);
+  }
 }

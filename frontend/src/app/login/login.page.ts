@@ -48,6 +48,7 @@ export class LoginPage implements ViewWillEnter {
       this.userService.login(this.loginForm.value.email ?? '', this.loginForm.value.password ?? '').subscribe({
         next: (response) => {
           this.tokenService.setToken(response.token);
+          this.userService.setLoggedIn(true);
           this.alertController.create({
             header: 'Success',
             message: 'Login successful',

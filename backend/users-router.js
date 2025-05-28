@@ -223,4 +223,29 @@ router.get('/validate-token', authenticateToken, (req, res) => {
     res.status(200).json({ message: 'Token is valid', userId: userId });
 });
 
+router.post('/change-name', authenticateToken, (req, res, next) => {
+    const userId = req.user.id; // Extracted from the token
+    const { name } = req.body;
+    if (!name || name.trim() === '') {
+        return res.status(400).json({ error: 'Name is required' });
+    }
+
+    usersDb.run('UPDATE users SET name = ? WHERE id = ?', [name, userId], function(err) {
+        if (err) return next(err);
+        if (this.changes === 0) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+        res.status(200).json({ message: 'Name changed successfully' });
+    });
+});
+
+router.get('/me', authenticateToken, (req, res, next) => {
+    const userId = req.user.id;
+    usersDb.get('SELECT name, email FROM users WHERE id = ?', [userId], (err, user) => {
+        if (err) return next(err);
+        if (!user) return res.status(404).json({ error: 'User not found' });
+        res.json(user);
+    });
+});
+
 module.exports = router;

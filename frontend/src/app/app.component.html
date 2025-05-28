@@ -15,8 +15,9 @@
       <ion-button expand="block" [routerLink]="['/my-playlists']">My playlists</ion-button>
       <ion-button expand="block" [routerLink]="['/create-playlist']">Create playlist</ion-button>
       <ion-button expand="block" [routerLink]="['/manage-account']">Manage account</ion-button>
-      <ion-button expand="block" [routerLink]="['/auth/login']">Login</ion-button>
-      <ion-button expand="block" [routerLink]="['/auth/register']">Register</ion-button>
+      <ion-button *ngIf="!isLoggedIn" expand="block" [routerLink]="['/auth/login']">Login</ion-button>
+      <ion-button *ngIf="!isLoggedIn" expand="block" [routerLink]="['/auth/register']">Register</ion-button>
+      <ion-button *ngIf="isLoggedIn" expand="block" (click)="logout()">Logout</ion-button>
     </ion-menu-toggle>
   </ion-content>
 </ion-menu>

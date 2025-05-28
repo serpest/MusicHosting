@@ -42,9 +42,9 @@
 }
 
 #control-buttons-container > button {
-    width: 8em;
-    height: 4em;
-    border-radius: 1em;
+    width: 5em;
+    height: 5em;
+    border-radius: 10em;
     font-size: medium;
     border-style: none;
 }
@@ -137,4 +137,27 @@ li {
     .playing-song-data {
         align-items: center;
     }
+}
+
+.icon{
+    font-size: 2.5em; /* Adjust the size of the icon */
+}
+
+button:hover .icon {
+    color: black; /* Change to your desired hover color */
+}
+
+button:hover {
+    background-color: #f0f0f0; /* Change to your desired hover background color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+button:hover .fullHeart{
+    color: red; /* Change to your desired hover background color */
+     /* Change cursor to pointer on hover */
+}
+
+.fullHeart {
+  font-variation-settings: 'FILL' 1, 'wght' 700;
+  color: red; /* Optional: makes the heart red */
 }

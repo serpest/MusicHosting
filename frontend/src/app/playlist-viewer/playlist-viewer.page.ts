@@ -34,11 +34,21 @@ export class PlaylistViewerPage implements ViewWillEnter {
 
   ionViewWillEnter() {
     this.route.params.subscribe(data => {
-      this.playlistService.getPlaylistById(data['playlistId']).subscribe({
+      
+      if (data['playlistId'] === '-1') {
+        this.caricaLikedSongs();
+      }else{
+        this.caricaPlaylist(data['playlistId']);
+      }
+    });
+  }
+
+  caricaPlaylist(playlistId: number) {
+    this.playlistService.getPlaylistById(playlistId).subscribe({
         next: (playlistData: any) => {
           this.isExisting = true;
           this.playlist = Playlist.fromJsonWithoutSongs(playlistData.playlist);
-          this.playlistService.getPlaylistSongs(data['playlistId']).subscribe({
+          this.playlistService.getPlaylistSongs(playlistId).subscribe({
             next: (songsData: any) => {
               this.playlist!.songs = songsData.songs.map((songData: any) => Song.fromJson(songData));
             },
@@ -46,7 +56,7 @@ export class PlaylistViewerPage implements ViewWillEnter {
               this.playlist!.songs = [];
             }
           });
-          this.playlistService.getPlaylistCreator(data['playlistId']).subscribe({
+          this.playlistService.getPlaylistCreator(playlistId).subscribe({
             next: (creatorData: any) => {
               this.playlistCreator = creatorData.creator.name;
             },
@@ -75,6 +85,35 @@ export class PlaylistViewerPage implements ViewWillEnter {
           this.isMine = false;
         }
       });
+  }
+
+  caricaLikedSongs() {
+    this.playlistService.getPlaylistLikedSongs().subscribe({
+      next: (songsData: any) => {
+        //console.log("ho preso tutte le canzoni");
+        this.playlist = new Playlist(-1, 'Liked Songs', 0);
+        this.playlist!.songs = songsData.songs.map((songData: any) => Song.fromJson(songData));
+        //console.log("Errore");
+      },
+      error: () => {
+        this.playlist!.songs = [];
+      }
+    });
+    this.playlistCreator = 'Liked Songs';
+    this.isExisting = true;
+    this.isMine = true;
+    this.userService.validateToken().subscribe({
+      next: (data) => {
+        this.isMine = true;
+        this.songService.getSongs().subscribe({
+          next: (songsData: any) => {
+            this.allSongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
+          }
+        });
+      },
+      error: () => {
+        this.isMine = false;
+      }
     });
   }
 

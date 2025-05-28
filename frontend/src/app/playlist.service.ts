@@ -52,4 +52,8 @@ export class PlaylistService {
     return this.http.post(`${this.baseUrl}/playlists/id/${playlistId}/remove-song`, {songId});
   }
 
+  getPlaylistLikedSongs(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/likes/playlist-liked-songs`);
+  }
+
 }

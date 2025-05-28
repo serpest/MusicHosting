@@ -30,14 +30,38 @@
               <input type="range" id="progress-bar" min="0" [max]="duration" [value]="currentTime" (input)="seek($event)" />
               <div id="control-buttons-container">
                   @if (playingSongs.length > 1) {
-                    <button (click)="playPreviousSong()">Previous</button>
+                    <button (click)="playPreviousSong()">
+                      <span class="material-symbols-outlined icon">skip_previous</span>
+                    </button>
                   }
-                  <button (click)="playSong()">Play</button>
-                  <button (click)="pauseSong()">Pause</button>
-                  <button (click)="restartSong()">Restart</button>
+                  @if(isPlaying) {
+                    <button (click)="pauseSong()">
+                      <span class="material-symbols-outlined icon">pause</span>
+                    </button>
+                  } @else {
+                    <button (click)="playSong()">
+                      <span class="material-symbols-outlined icon">play_arrow</span>
+                    </button>
+                  }
                   @if (playingSongs.length > 1) {
-                    <button (click)="playNextSong()">Next</button>
+                    <button (click)="playNextSong()">
+                      <span class="material-symbols-outlined icon">skip_next</span>
+                    </button>
                   }
+                  <button (click)="restartSong()">
+                    <span class="material-symbols-outlined icon">replay</span>
+                  </button>
+                  @if (isLiked) {
+                    <button (click)="unlikeSong()">
+                      <span class="material-symbols-outlined icon fullHeart">favorite</span>
+                    </button>
+                  } @else {
+                    <button (click)="likeSong()">
+                      <span class="material-symbols-outlined icon">favorite</span>
+                    </button>
+                  }
+                  
+                  
               </div>
           </div>
       </div>

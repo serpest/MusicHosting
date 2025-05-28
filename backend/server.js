@@ -5,6 +5,7 @@ const { argv } = require('process');
 const songsRouter = require('./songs-router');
 const usersRouter = require('./users-router');
 const playlistsRouter = require('./playlists-router');
+const likesRouter = require('./likes-router');
 
 const app = express();
 
@@ -44,3 +45,4 @@ app.get('/', (_req, res) => {
 app.use('/songs', songsRouter);
 app.use('/users', usersRouter);
 app.use('/playlists', playlistsRouter);
+app.use('/likes', likesRouter);

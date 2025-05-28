@@ -24,6 +24,8 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   duration: number = 0;
   isExisting: boolean = false;
   playingSongs: Song[] = [];
+  isLiked: boolean = false;
+  isPlaying: boolean = false;
 
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService, private router: Router,
               private playingSongsService: PlayingSongsService, private alertController: AlertController) {}
@@ -47,6 +49,12 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
               this.duration = this.audio?.duration || 0;
             });
             this.playSong();
+            
+            this.songService.isSongLiked(this.song.id).subscribe({
+              next: res => {
+                this.isLiked = res.liked;
+              }
+            });
           });
           this.playingSongs = this.playingSongsService.getPlayingSongs();
         });
@@ -76,6 +84,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
 
   playSong() {
     if (this.audio) {
+      this.isPlaying = true;
       this.audio.play().catch((error) => {
         console.error('[ERROR] Error playing audio:', error);
       });
@@ -85,6 +94,7 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
   pauseSong() {
     if (this.audio) {
       this.audio.pause();
+      this.isPlaying = false;
     }
   }
 
@@ -129,6 +139,30 @@ export class SongPlayerPage implements ViewWillEnter, ViewWillLeave {
       this.pauseSong()
       this.playAnotherSong(this.playingSongs[currentIndex + 1].id);
     }
+  }
+
+  likeSong() {
+    console.log('Like song:', this.song?.id); 
+    this.songService.likeSong(this.song?.id || 0).subscribe({
+      next: () => {
+        this.isLiked = true;
+      },
+      error: (error) => {
+        console.error('Error liking song:', error);
+      }
+    });
+  }
+
+  unlikeSong() {
+    console.log('Unlike song:', this.song?.id);
+    this.songService.unlikeSong(this.song?.id || 0).subscribe({
+      next: () => {
+        this.isLiked = false;
+      },
+      error: (error) => {
+        console.error('Error unliking song:', error);
+      }
+    }); 
   }
 
 }

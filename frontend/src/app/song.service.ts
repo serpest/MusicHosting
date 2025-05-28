@@ -48,4 +48,16 @@ export class SongService {
     return this.http.delete(`${this.baseUrl}/songs/id/${songId}`);
   }
 
+  isSongLiked(songId: number): Observable<{ liked: boolean }> {
+    return this.http.get<{ liked: boolean }>(`${this.baseUrl}/likes/${songId}/is-liked`);
+  }
+
+  likeSong(songId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/likes/${songId}/like`, {});
+  }
+
+  unlikeSong(songId: number): Observable<any> {
+    return this.http.post(`${this.baseUrl}/likes/${songId}/unlike`, {});
+  }
+
 }

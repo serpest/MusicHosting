@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
+import { FormControl, FormGroup, FormsModule, Validators, ReactiveFormsModule } from '@angular/forms';
+import { IonButton, IonText, IonItem, IonLabel, IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { UserService } from '../user.service';
 import { TokenService } from '../token.service';
 import { Router } from '@angular/router';
@@ -12,9 +12,15 @@ import { AlertController } from '@ionic/angular';
   templateUrl: './manage-account.page.html',
   styleUrls: ['./manage-account.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [ IonContent, IonHeader, IonItem, IonText, IonButton, IonLabel, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ManageAccountPage implements ViewWillEnter {
+  successMessage = '';
+  errorMessage = '';
+
+  changeNameForm = new FormGroup({
+    name: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)])
+  });
 
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
@@ -37,23 +43,24 @@ export class ManageAccountPage implements ViewWillEnter {
         });
       }
     });
+    
+    this.userService.getCurrentUser().subscribe({
+      next: user => {
+        this.changeNameForm.setValue({ name: user.name });
+      }
+    });
   }
 
-  logout() {
-    this.tokenService.removeToken();
-    this.alertController.create({
-      header: 'Success',
-      message: 'Logout successful',
-      buttons: [
-        {
-          text: 'Ok',
-          handler: () => {
-            this.router.navigate(['']);
-          }
-        }
-      ]
-    }).then(alert => {
-      alert.present();
+  changeName() {
+    this.successMessage = '';
+    this.errorMessage = '';
+    this.userService.changeName(this.changeNameForm.value.name ?? '').subscribe({
+      next: () => {
+        this.successMessage = 'Name changed successfully!';
+      },
+      error: () => {
+        this.errorMessage = 'Error changing name.';
+      }
     });
   }
 
