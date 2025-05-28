@@ -6,13 +6,14 @@ import { UserService } from '../user.service';
 import { TokenService } from '../token.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { PlayingSongsService } from '../playing.songs.service';
 
 @Component({
   selector: 'app-manage-account',
   templateUrl: './manage-account.page.html',
   styleUrls: ['./manage-account.page.scss'],
   standalone: true,
-  imports: [ IonContent, IonHeader, IonItem, IonText, IonButton, IonLabel, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [ IonContent, IonHeader, IonText, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ManageAccountPage implements ViewWillEnter {
   successMessage = '';
@@ -22,7 +23,7 @@ export class ManageAccountPage implements ViewWillEnter {
     name: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)])
   });
 
-  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
+  constructor(private playingSongsService: PlayingSongsService, private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
     this.userService.validateToken().subscribe({
@@ -61,6 +62,25 @@ export class ManageAccountPage implements ViewWillEnter {
       error: () => {
         this.errorMessage = 'Error changing name.';
       }
+    });
+  }
+
+  logout() {
+    this.playingSongsService.setIsMiniPlayerDisplayed(false);
+    this.tokenService.removeToken();
+    this.alertController.create({
+      header: 'Success',
+      message: 'Logout successful',
+      buttons: [
+        {
+          text: 'Ok',
+          handler: () => {
+            this.router.navigate(['']);
+          }
+        }
+      ]
+    }).then(alert => {
+      alert.present();
     });
   }
 

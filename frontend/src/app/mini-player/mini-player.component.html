@@ -1,0 +1,21 @@
+@if (isDisplayed) {
+  <div class="mini-player">
+        <div class="song-details">
+            <h2>{{ song?.artist + " - " + song?.title }}</h2>
+        </div>
+      <!-- TODO: Adapt for mobile -->
+      <div id="control-buttons-container">
+          @if (playingSongs.length > 1) {
+            <button (click)="playPreviousSong()">Previous</button>
+          }
+          <button (click)="playSong()">Play</button>
+          <button (click)="pauseSong()">Pause</button>
+          <button (click)="restartSong()">Restart</button>
+          @if (playingSongs.length > 1) {
+            <button (click)="playNextSong()">Next</button>
+          }
+          <button (click)="open()">Open</button>
+          <button (click)="close()">Close</button>
+      </div>
+  </div>
+}

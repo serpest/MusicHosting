@@ -1,0 +1,14 @@
+.mini-player {
+    height: 4em;
+    padding: 1em;
+    background-color: #4782eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+#control-buttons-container > button {
+    padding: 1em 1.5em;
+    margin-left: 0.5em;
+    border-radius: 1em;
+}
