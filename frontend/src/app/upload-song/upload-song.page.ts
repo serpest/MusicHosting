@@ -16,7 +16,7 @@ import { PlayingSongsService } from '../playing.songs.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class UploadSongPage implements ViewWillEnter {
+export class UploadSongPage {
 
   songForm = new FormGroup({
     title: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
@@ -31,27 +31,6 @@ export class UploadSongPage implements ViewWillEnter {
   albumPictureFile: File | undefined;
 
   constructor(private userService: UserService, private songService: SongService, private router: Router, private alertController: AlertController, private playingSongsService: PlayingSongsService) {}
-
-  ionViewWillEnter() {
-    this.userService.validateToken().subscribe({
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          alert.present();
-        });
-      }
-    });
-  }
 
   audioFileChange(event: Event) {
     const target = event.target as HTMLInputElement;

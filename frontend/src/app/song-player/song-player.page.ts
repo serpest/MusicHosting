@@ -28,59 +28,39 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
               private playingSongsService: PlayingSongsService, private alertController: AlertController) {}
 
   ngOnInit() {
-    this.userService.validateToken().subscribe({
-      next: () => {
-        this.route.params.subscribe(data => {
-          this.songService.getSongById(data['songId']).subscribe((songData: any) => {
-            this.isExisting = true;
-            this.song = Song.fromJson(songData.song);
-            if (!(this.playingSongsService.getIsMiniPlayerDisplayed() && this.playingSongsService.getPlayingSong() !== undefined
-            && this.playingSongsService.getPlayingSong()?.id == data['songId'])) {
-               if (this.playingSongsService.getIsPlaying()) {
-                this.pauseSong();
-              }
-              // Audio is not already playing in mini player or it's a different song, so we create a new Audio instance
-              this.playingSongsService.setAudio(new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`));
-            }
-            this.playingSongsService.setIsMiniPlayerDisplayed(false);
-            this.playingSongsService.getAudio().addEventListener('timeupdate', () => {
-              if (this.playingSongs.length > 1 && this.playingSongsService.getAudio() && this.playingSongsService.getAudio().currentTime > 0 &&
-                  this.playingSongsService.getAudio().currentTime == this.playingSongsService.getAudio().duration && !this.playingSongsService.getIsMiniPlayerDisplayed()) {
-                this.playNextSong();
-              }
-              this.currentTime = this.playingSongsService.getAudio()?.currentTime || 0;
-            });
-            this.playingSongsService.getAudio().addEventListener('loadedmetadata', () => {
-              this.duration = this.playingSongsService.getAudio()?.duration || 0;
-            });
-            this.playingSongs = this.playingSongsService.getPlayingSongs();
-            if (this.playingSongs.length === 0) {
-              this.playingSongsService.setPlayingSongs([this.song!]);
-              this.playingSongsService.setPlayingIndex(0);
-            } else {
-              const currentIndex = this.playingSongs.findIndex(song => song.id == data['songId']);
-              this.playingSongsService.setPlayingIndex(currentIndex);
-            }
-            this.playSong();
-          });
+    this.route.params.subscribe(data => {
+      this.songService.getSongById(data['songId']).subscribe((songData: any) => {
+        this.isExisting = true;
+        this.song = Song.fromJson(songData.song);
+        if (!(this.playingSongsService.getIsMiniPlayerDisplayed() && this.playingSongsService.getPlayingSong() !== undefined
+        && this.playingSongsService.getPlayingSong()?.id == data['songId'])) {
+            if (this.playingSongsService.getIsPlaying()) {
+            this.pauseSong();
+          }
+          // Audio is not already playing in mini player or it's a different song, so we create a new Audio instance
+          this.playingSongsService.setAudio(new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`));
+        }
+        this.playingSongsService.setIsMiniPlayerDisplayed(false);
+        this.playingSongsService.getAudio().addEventListener('timeupdate', () => {
+          if (this.playingSongs.length > 1 && this.playingSongsService.getAudio() && this.playingSongsService.getAudio().currentTime > 0 &&
+              this.playingSongsService.getAudio().currentTime == this.playingSongsService.getAudio().duration && !this.playingSongsService.getIsMiniPlayerDisplayed()) {
+            this.playNextSong();
+          }
+          this.currentTime = this.playingSongsService.getAudio()?.currentTime || 0;
         });
-      },
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          alert.present();
+        this.playingSongsService.getAudio().addEventListener('loadedmetadata', () => {
+          this.duration = this.playingSongsService.getAudio()?.duration || 0;
         });
-      }
+        this.playingSongs = this.playingSongsService.getPlayingSongs();
+        if (this.playingSongs.length === 0) {
+          this.playingSongsService.setPlayingSongs([this.song!]);
+          this.playingSongsService.setPlayingIndex(0);
+        } else {
+          const currentIndex = this.playingSongs.findIndex(song => song.id == data['songId']);
+          this.playingSongsService.setPlayingIndex(currentIndex);
+        }
+        this.playSong();
+      });
     });
   }
 

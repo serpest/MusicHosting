@@ -23,29 +23,8 @@ export class MyPlaylistsPage implements ViewWillEnter {
   constructor(private playlistService: PlaylistService, private userService: UserService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
-    this.userService.validateToken().subscribe({
-      next: () => {
-        this.playlistService.getMyPlaylists().subscribe((playlistsData: any) => {
-          this.myPlaylists = playlistsData.playlists.map((playlistData: any) => Playlist.fromJsonWithoutCreatorAndSongs(playlistData));
-        });
-      },
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          this.myPlaylists = [];
-          alert.present();
-        });
-      }
+    this.playlistService.getMyPlaylists().subscribe((playlistsData: any) => {
+      this.myPlaylists = playlistsData.playlists.map((playlistData: any) => Playlist.fromJsonWithoutCreatorAndSongs(playlistData));
     });
   }
 

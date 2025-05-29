@@ -25,29 +25,8 @@ export class MySongsPage implements ViewWillEnter {
   constructor(private songService: SongService, private userService: UserService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
-    this.userService.validateToken().subscribe({
-      next: () => {
-        this.songService.getMySongs().subscribe((songsData: any) => {
-          this.mySongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
-        });
-      },
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          this.mySongs = [];
-          alert.present();
-        });
-      }
+    this.songService.getMySongs().subscribe((songsData: any) => {
+      this.mySongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
     });
   }
 

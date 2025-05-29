@@ -15,30 +15,9 @@ import { PlayingSongsService } from '../playing.songs.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
-export class ManageAccountPage implements ViewWillEnter {
+export class ManageAccountPage {
 
   constructor(private playingSongsService: PlayingSongsService, private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
-
-  ionViewWillEnter() {
-    this.userService.validateToken().subscribe({
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          alert.present();
-        });
-      }
-    });
-  }
 
   logout() {
     this.playingSongsService.setIsMiniPlayerDisplayed(false);

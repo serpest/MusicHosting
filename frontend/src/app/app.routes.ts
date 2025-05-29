@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { tokenGuard } from './token.guard';
 
 export const routes: Routes = [
   {
@@ -7,7 +8,8 @@ export const routes: Routes = [
   },
   {
     path: 'create-playlist',
-    loadComponent: () => import('./create-playlist/create-playlist.page').then( m => m.CreatePlaylistPage)
+    loadComponent: () => import('./create-playlist/create-playlist.page').then( m => m.CreatePlaylistPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'discover-playlists',
@@ -23,15 +25,18 @@ export const routes: Routes = [
   },
   {
     path: 'manage-account',
-    loadComponent: () => import('./manage-account/manage-account.page').then( m => m.ManageAccountPage)
+    loadComponent: () => import('./manage-account/manage-account.page').then( m => m.ManageAccountPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'my-playlists',
-    loadComponent: () => import('./my-playlists/my-playlists.page').then( m => m.MyPlaylistsPage)
+    loadComponent: () => import('./my-playlists/my-playlists.page').then( m => m.MyPlaylistsPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'my-songs',
-    loadComponent: () => import('./my-songs/my-songs.page').then( m => m.MySongsPage)
+    loadComponent: () => import('./my-songs/my-songs.page').then( m => m.MySongsPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'search-songs',
@@ -43,15 +48,18 @@ export const routes: Routes = [
   },
   {
     path: 'song-player/:songId',
-    loadComponent: () => import('./song-player/song-player.page').then( m => m.SongPlayerPage)
+    loadComponent: () => import('./song-player/song-player.page').then( m => m.SongPlayerPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'playlist-viewer/:playlistId',
-    loadComponent: () => import('./playlist-viewer/playlist-viewer.page').then( m => m.PlaylistViewerPage)
+    loadComponent: () => import('./playlist-viewer/playlist-viewer.page').then( m => m.PlaylistViewerPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'upload-song',
-    loadComponent: () => import('./upload-song/upload-song.page').then( m => m.UploadSongPage)
+    loadComponent: () => import('./upload-song/upload-song.page').then( m => m.UploadSongPage),
+    canActivate: [tokenGuard]
   },
   {
     path: 'page-not-found',

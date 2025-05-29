@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { firstValueFrom, Observable } from 'rxjs';
 
 
 @Injectable({
@@ -41,4 +41,14 @@ export class UserService {
     return this.http.get(`${this.baseUrl}/users/validate-token`);
   }
 
+  async isTokenValid(): Promise<boolean> {
+    try {
+      // firstValueFrom() is used to convert the Observable to a Promise
+      await firstValueFrom(this.validateToken());
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  
 }

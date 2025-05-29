@@ -16,34 +16,13 @@ import { PlaylistService } from '../playlist.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class CreatePlaylistPage implements ViewWillEnter {
+export class CreatePlaylistPage {
 
   playlistForm = new FormGroup({
     title: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)])
   });
 
   constructor(private userService: UserService, private playlistService: PlaylistService, private router: Router, private alertController: AlertController) {}
-
-  ionViewWillEnter() {
-    this.userService.validateToken().subscribe({
-      error: () => {
-        this.alertController.create({
-          header: 'Not logged in',
-          message: 'You need to be logged in to access this page',
-          buttons: [
-            {
-              text: 'Ok',
-              handler: () => {
-                this.router.navigate(['auth']);
-              }
-            }
-          ]
-        }).then(alert => {
-          alert.present();
-        });
-      }
-    });
-  }
 
   submit() {
     const playlist = new Playlist(
