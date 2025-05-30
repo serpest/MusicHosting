@@ -13,9 +13,9 @@
   <ion-content class="ion-padding">
     <h1>Song player</h1>
     @if (isExisting) {
-      <div class="song">
+      <div #songItem class="song">
           <div class="song-data">
-              <img class="song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <img class="song-image s-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" crossorigin="anonymous" />
               <div class="song-details">
                   <h2>{{ song?.title }}</h2>
                   <p><b>Artist:</b> {{ song?.artist }}</p>
@@ -48,9 +48,9 @@
       <h2>Playing songs</h2>
       <ol>
         @for (s of playingSongs; track s.id) {
-          <li class="playing-song" [ngClass]="{'playing-song-active': s.id == song?.id}">
+          <li #songItem class="playing-song" [ngClass]="{'playing-song-active': s.id == song?.id}">
             <div class="playing-song-data">
-              <img class="playing-song-image" src="http://localhost:3000/songs/id/{{ s.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <img class="playing-song-image s-image" src="http://localhost:3000/songs/id/{{ s.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" crossorigin="anonymous" />
               <div class="playing-song-details">
                   <h2>{{ s.title }}</h2>
                   <p><b>Artist:</b> {{ s.artist }}</p>

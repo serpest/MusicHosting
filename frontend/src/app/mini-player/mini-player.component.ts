@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PlayingSongsService } from '../playing.songs.service';
 import { Song } from '../song.model';
 import { AlertController, ViewWillEnter } from '@ionic/angular';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SongService } from '../song.service';
 import { UserService } from '../user.service';
+import { FastAverageColor } from 'fast-average-color';
 
 @Component({
   selector: 'app-mini-player',
   templateUrl: './mini-player.component.html',
   styleUrls: ['./mini-player.component.scss'],
 })
-export class MiniPlayerComponent {
+export class MiniPlayerComponent implements AfterViewInit {
+
+  @ViewChildren('songItem')
+  songItemElements!: QueryList<ElementRef<HTMLLIElement>>;
 
   isDisplayed: boolean = false;
   playingSongs: Song[] = [];
@@ -22,7 +26,10 @@ export class MiniPlayerComponent {
   currentTime: number = 0;
   duration: number = 0;
 
+  fac: FastAverageColor;
+
   constructor(private router: Router, private songService: SongService, private playingSongsService: PlayingSongsService) {
+    this.fac = new FastAverageColor();
     this.playingSongsService.getIsMiniPlayerDisplayedObservable().subscribe(
       isDisplayed => {
         this.isDisplayed = isDisplayed;
@@ -53,6 +60,26 @@ export class MiniPlayerComponent {
         this.isPlaying = isPlaying;
       }
     );
+  }
+
+  ngAfterViewInit() {
+    this.songItemElements.changes.subscribe(songItemRefs => {
+      this.updateColor(songItemRefs);
+    });
+  }
+
+  updateColor(songItemRefs: QueryList<ElementRef<HTMLLIElement>>) {
+    songItemRefs.forEach((songItemRef: { nativeElement: any; }) => {
+      const container = songItemRef.nativeElement;
+      this.fac.getColorAsync(`http://localhost:3000/songs/id/${this.song?.id}/album_picture`)
+        .then(color => {
+          container.style.backgroundColor = color.rgba;
+          container.style.color = color.isDark ? '#fff' : '#000';
+        })
+        .catch(e => {
+          console.error('Failed to get average color for mini player');
+        });
+    });
   }
 
   playSong() {
@@ -96,6 +123,7 @@ export class MiniPlayerComponent {
       this.playingSongsService.setIsPlaying(false);
       this.playingSongsService.setAudio(new Audio(`http://localhost:3000/songs/id/${this.playingSongs[songIndex].id}/audio`));
       this.playingSongsService.setPlayingIndex(songIndex);
+      this.updateColor(this.songItemElements);
       this.playSong();
     }
   }
