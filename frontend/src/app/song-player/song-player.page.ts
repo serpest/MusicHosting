@@ -156,17 +156,21 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
 
   playPreviousSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
+    this.pauseSong();
     if (currentIndex > 0) {
-      this.pauseSong();
       this.playAnotherSong(this.playingSongs[currentIndex - 1].id);
+    } else {
+      this.playAnotherSong(this.playingSongs[this.playingSongs.length - 1].id);
     }
   }
 
   playNextSong() {
     const currentIndex = this.playingSongs.findIndex(song => song.id === this.song?.id);
+    this.pauseSong()
     if (currentIndex < this.playingSongs.length - 1) {
-      this.pauseSong()
       this.playAnotherSong(this.playingSongs[currentIndex + 1].id);
+    } else {
+      this.playAnotherSong(this.playingSongs[0].id);
     }
   }
 

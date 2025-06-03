@@ -108,12 +108,16 @@ export class MiniPlayerComponent implements AfterViewInit {
   playPreviousSong() {
     if (this.playingIndex > 0) {
       this.playAnotherSong(this.playingIndex - 1);
+    } else {
+      this.playAnotherSong(this.playingSongs.length - 1);
     }
   }
 
   playNextSong() {
     if (this.playingIndex < this.playingSongs.length - 1) {
       this.playAnotherSong(this.playingIndex + 1);
+    } else {
+      this.playAnotherSong(0);
     }
   }
 
