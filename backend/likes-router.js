@@ -33,7 +33,7 @@ router.post('/:songId/like', authenticateToken, (req, res, next) => {
             [userId, songId],
             function(err) {
                 if (err) return next(err);
-                res.status(201).json({ message: 'Song liked successfully', likeId: this.lastID });
+                res.status(201).json({ message: 'Song liked successfully' });
             }
         );
     });
@@ -111,7 +111,6 @@ router.get('/most-liked/:n', (req, res, next) => {
                 (err, songs) => {
                     if (err) return next(err);
                     res.status(200).json({ songs: songs });
-                    
                 }
             );
         }
@@ -129,7 +128,6 @@ router.post('/likes-per-song', (req, res, next) => {
         songIds,
         (err, rows) => {
             if (err) return next(err);
-            // Convert to { songId: likes, ... }
             const result = {};
             for (const row of rows) {
                 result[row.song_id] = row.likes;
@@ -139,7 +137,6 @@ router.post('/likes-per-song', (req, res, next) => {
     );
 });
 
-// num of likes per song
 router.get('/:songId/count', (req, res, next) => {
     const songId = req.params.songId;
     likesDb.get(
@@ -152,7 +149,5 @@ router.get('/:songId/count', (req, res, next) => {
     );
     
 });
-
-
 
 module.exports = router;

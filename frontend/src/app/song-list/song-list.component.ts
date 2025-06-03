@@ -41,7 +41,7 @@ export class SongListComponent implements AfterViewInit {
   }
 
   play(songId: number) {
-    this.playingSongsService.setPlayingSongs(this.songs()!);
+    this.playingSongsService.setPlayingSongs(this.sortedSongs());
     this.router.navigate(['/song-player', songId]);
   }
 

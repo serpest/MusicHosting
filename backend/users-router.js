@@ -36,7 +36,7 @@ router.post('/register', (req, res, next) => {
     }
 
     // Check if email is valid
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // TODO
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         return res.status(400).json({ error: 'Invalid email format' });
     }
@@ -219,12 +219,12 @@ router.post('/delete', (req, res, next) => {
 });
 
 router.get('/validate-token', authenticateToken, (req, res) => {
-    const userId = req.user.id; // Extract user ID from the verified token
+    const userId = req.user.id;
     res.status(200).json({ message: 'Token is valid', userId: userId });
 });
 
 router.post('/change-name', authenticateToken, (req, res, next) => {
-    const userId = req.user.id; // Extracted from the token
+    const userId = req.user.id;
     const { name } = req.body;
     if (!name || name.trim() === '') {
         return res.status(400).json({ error: 'Name is required' });

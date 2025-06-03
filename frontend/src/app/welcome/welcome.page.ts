@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { RouterModule } from '@angular/router';
 import { SongService } from '../song.service';
 import { Song } from '../song.model';
@@ -14,14 +14,14 @@ import { SongListComponent } from '../song-list/song-list.component';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, RouterModule, SongListComponent]
 })
-export class WelcomePage implements OnInit {
+export class WelcomePage implements ViewWillEnter {
 
   mostLikedSongs : Song[] = [];
 
   constructor(private songService: SongService) { }
 
-  ngOnInit() {
-    this.songService.getMostLikedSongs(5).subscribe((songsData: any) => {
+  ionViewWillEnter() {
+    this.songService.getMostLikedSongs(6).subscribe((songsData: any) => {
       this.mostLikedSongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
     });
   }

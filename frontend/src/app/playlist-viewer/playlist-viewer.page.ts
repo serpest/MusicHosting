@@ -36,14 +36,14 @@ export class PlaylistViewerPage implements ViewWillEnter {
     this.route.params.subscribe(data => {
       
       if (data['playlistId'] === '-1') {
-        this.caricaLikedSongs();
+        this.loadLikedSongs();
       }else{
-        this.caricaPlaylist(data['playlistId']);
+        this.loadPlaylist(data['playlistId']);
       }
     });
   }
 
-  caricaPlaylist(playlistId: number) {
+  loadPlaylist(playlistId: number) {
     this.playlistService.getPlaylistById(playlistId).subscribe({
         next: (playlistData: any) => {
           this.isExisting = true;
@@ -87,34 +87,18 @@ export class PlaylistViewerPage implements ViewWillEnter {
       });
   }
 
-  caricaLikedSongs() {
+  loadLikedSongs() {
+    this.playlist = new Playlist(-1, 'Liked Songs', 0);
     this.playlistService.getPlaylistLikedSongs().subscribe({
       next: (songsData: any) => {
-        //console.log("ho preso tutte le canzoni");
-        this.playlist = new Playlist(-1, 'Liked Songs', 0);
         this.playlist!.songs = songsData.songs.map((songData: any) => Song.fromJson(songData));
-        //console.log("Errore");
       },
       error: () => {
         this.playlist!.songs = [];
       }
     });
-    this.playlistCreator = 'Liked Songs';
+    this.playlistCreator = 'System';
     this.isExisting = true;
-    this.isMine = true;
-    this.userService.validateToken().subscribe({
-      next: (data) => {
-        this.isMine = true;
-        this.songService.getSongs().subscribe({
-          next: (songsData: any) => {
-            this.allSongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
-          }
-        });
-      },
-      error: () => {
-        this.isMine = false;
-      }
-    });
   }
 
   deletePlaylist() {
@@ -156,7 +140,7 @@ export class PlaylistViewerPage implements ViewWillEnter {
       this.playlistService.addSongToPlaylist(this.playlist!.id, this.selectedSongToAdd.id).subscribe({
         next: () => {
           this.playlist!.songs.push(this.selectedSongToAdd!);
-          this.caricaPlaylist(this.playlist!.id);
+          this.loadPlaylist(this.playlist!.id);
           this.selectedSongToAdd = undefined;
         },
         error: (error) => {
@@ -195,7 +179,7 @@ export class PlaylistViewerPage implements ViewWillEnter {
       this.playlistService.removeSongFromPlaylist(this.playlist!.id, this.selectedSongToRemove.id).subscribe({
         next: () => {
           this.playlist!.songs = this.playlist!.songs.filter(song => song.id !== this.selectedSongToRemove!.id);
-          this.caricaPlaylist(this.playlist!.id);
+          this.loadPlaylist(this.playlist!.id);
           this.selectedSongToRemove = undefined;
         },
         error: () => {

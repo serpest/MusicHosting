@@ -14,7 +14,7 @@
     @if (isExisting) {
       <div #songItem class="playing-song">
           <div class="song-data">
-              <img class="playing-song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" crossorigin="anonymous" />
+              <img class="playing-song-image song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" crossorigin="anonymous" />
               <div class="song-details">
                   <h1>{{ song?.title }}</h1>
                   <p><b>Artist:</b> {{ song?.artist }}</p>
@@ -59,9 +59,7 @@
                     <button (click)="likeSong()" class="play-button">
                       <span class="material-symbols-outlined play-icon">favorite</span>
                     </button>
-                  }
-                  
-                  
+                  }    
               </div>
           </div>
       </div>
