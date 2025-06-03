@@ -46,6 +46,11 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
           }
           // Audio is not already playing in mini player or it's a different song, so we create a new Audio instance
           this.playingSongsService.setAudio(new Audio(`http://localhost:3000/songs/id/${this.song?.id}/audio`));
+          this.playingSongsService.getAudio().addEventListener('loadedmetadata', () => {
+            this.duration = this.playingSongsService.getAudio()?.duration || 0;
+          });
+        } else {
+          this.duration = this.playingSongsService.getAudio().duration;
         }
         this.playingSongsService.setIsMiniPlayerDisplayed(false);
         this.playingSongsService.getAudio().addEventListener('timeupdate', () => {
@@ -54,9 +59,6 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
             this.playNextSong();
           }
           this.currentTime = this.playingSongsService.getAudio()?.currentTime || 0;
-        });
-        this.playingSongsService.getAudio().addEventListener('loadedmetadata', () => {
-          this.duration = this.playingSongsService.getAudio()?.duration || 0;
         });
         this.playingSongs = this.playingSongsService.getPlayingSongs();
         if (this.playingSongs.length === 0) {
