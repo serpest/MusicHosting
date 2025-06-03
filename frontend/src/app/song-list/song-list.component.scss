@@ -14,3 +14,20 @@
 li {
     list-style-type: none;
 }
+
+@media screen and (max-width: 1400px) {
+    .song {
+        flex-direction: column;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .song-data {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .song-image {
+        margin-right: 0;
+    }
+}

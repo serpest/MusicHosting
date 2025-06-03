@@ -80,7 +80,6 @@ export class RegisterPage implements ViewWillEnter {
         },
         error: (error) => {
           let alertMessage = 'Registration failed';
-          console.log(error);
           if (error.status === 409) {
             alertMessage = 'Email already registered';
           }

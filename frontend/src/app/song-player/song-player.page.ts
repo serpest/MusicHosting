@@ -41,7 +41,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
         this.song = Song.fromJson(songData.song);
         if (!(this.playingSongsService.getIsMiniPlayerDisplayed() && this.playingSongsService.getPlayingSong() !== undefined
             && this.playingSongsService.getPlayingSong()?.id == data['songId'])) {
-            if (this.playingSongsService.getIsPlaying()) {
+          if (this.playingSongsService.getIsPlaying()) {
             this.pauseSong();
           }
           // Audio is not already playing in mini player or it's a different song, so we create a new Audio instance
@@ -67,6 +67,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
         } else {
           const currentIndex = this.playingSongs.findIndex(song => song.id == data['songId']);
           this.playingSongsService.setPlayingIndex(currentIndex);
+          this.playSong();
         }
         this.songService.isSongLiked(this.song.id).subscribe({
           next: res => {
@@ -78,7 +79,6 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
             this.likes = res.likes;
           }
         });
-        this.playSong();
       });
     });
   }

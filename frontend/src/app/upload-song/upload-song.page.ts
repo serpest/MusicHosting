@@ -58,6 +58,7 @@ export class UploadSongPage {
             this.songService.submitSongAlbumPicture(response.songId, this.albumPictureFile!).subscribe({
               next: () => {
                 this.playingSongsService.setPlayingSongs([]);
+                this.playingSongsService.setPlayingIndex(-1);
                 this.router.navigate(['song-player', response.songId]);
               },
               error: () => {

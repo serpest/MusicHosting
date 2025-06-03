@@ -28,7 +28,7 @@ export class MiniPlayerComponent implements AfterViewInit {
 
   fac: FastAverageColor;
 
-  constructor(private router: Router, private songService: SongService, private playingSongsService: PlayingSongsService) {
+  constructor(private router: Router, private playingSongsService: PlayingSongsService) {
     this.fac = new FastAverageColor();
     this.playingSongsService.getIsMiniPlayerDisplayedObservable().subscribe(
       isDisplayed => {
