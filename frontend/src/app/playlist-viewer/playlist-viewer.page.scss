@@ -2,11 +2,29 @@
     margin-top: 1em;
     margin-bottom: 1em;
     padding: 1em;
-    background-color: grey;
+    background: linear-gradient(270deg, lightblue, blue, lightblue );
+    background-size: 600% 100%;
     border-radius: 1em;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    animation: gradient-slide 6s linear infinite;
+    color: #fff;
+    text-shadow: 1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    font-size: 1.5em;
+}
+
+@keyframes gradient-slide {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 #no-playlist-messsage {

@@ -36,6 +36,26 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
+button{
+    border-radius: 10em;
+    border: solid 3px black;
+}
+
+button:enabled {
+    background-color: blue;
+}
+
+button:enabled:hover {
+    cursor: pointer;
+    animation: pulse 1s;
+}
+
+button:disabled {
+    background-color: lightblue;
+    cursor: not-allowed;
+    color: black;
+}
+
 
 .list {
     padding: 0;
@@ -43,7 +63,7 @@
     flex-wrap: wrap;
 }
 
-.song {
+.song, .playlist, #no-songs-messsage , #no-playlists-messsage {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
@@ -51,9 +71,14 @@
     width: 45%;
     margin: 2%;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding: 1em;
+    background: linear-gradient(to right, rgb(0, 60, 255 ), #121212);
+    border-radius: 1em;
 }
 
-.song:hover {
+.song:hover, .playlist:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
@@ -87,7 +112,6 @@
 .play-button {
     width: 9em;
     height: 9em;
-    border-radius: 10em;
     font-size: medium;
     border: solid 3px black;
     background-color:rgba(0, 0, 0, 0.5);
@@ -95,8 +119,6 @@
 
 .play-button:hover {
     background-color: white; 
-    cursor: pointer; 
-    animation: pulse 1s;
 }
 
 .play-button:hover .play-icon {
@@ -136,5 +158,27 @@
     }
     100% {
         transform: translateY(0);
+    }
+}
+
+.awesome-writing {
+    font-size: 1.5em;
+    font-weight: bold;
+    animation: awesomePulse 2s infinite;
+    text-align: center;
+}
+
+@keyframes awesomePulse {
+    0% {
+        color: blue;
+        transform: scale(1);
+    }
+    50% {
+        color: lightblue;
+        transform: scale(1.2);
+    }
+    100% {
+        color: blue;
+        transform: scale(1);
     }
 }

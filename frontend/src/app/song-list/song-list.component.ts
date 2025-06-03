@@ -54,8 +54,8 @@ export class SongListComponent implements AfterViewInit {
         if (imgElement) {
           fac.getColorAsync(imgElement)
             .then(color => {
-              container.style.backgroundColor = color.rgba;
-              container.style.color = color.isDark ? '#fff' : '#000';
+                container.style.backgroundImage = `linear-gradient(to bottom, ${color.rgba}, #121212)`;
+                container.style.color = color.isDark ? '#fff' : '#000';
             })
             .catch(e => {
               console.error('Failed to get average color for image:', imgElement.src);

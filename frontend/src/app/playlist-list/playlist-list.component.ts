@@ -17,8 +17,4 @@ export class PlaylistListComponent {
     this.router.navigate(['/playlist-viewer', playlistId]);
   }
 
-  openLikedSongs() {
-    this.router.navigate(['/playlist-viewer', -1]);
-  }
-
 }
