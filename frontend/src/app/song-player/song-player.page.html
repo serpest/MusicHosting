@@ -68,7 +68,7 @@
     } @else {
       <p id="no-song-messsage">Song not found</p>
     }
-    @if (playingSongs.length > 0) {
+    @if (playingSongs.length > 1) {
       <h2>Playing songs</h2>
       <ol class="list">
         @for (s of playingSongs; track s.id) {

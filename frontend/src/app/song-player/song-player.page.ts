@@ -40,7 +40,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
         this.isExisting = true;
         this.song = Song.fromJson(songData.song);
         if (!(this.playingSongsService.getIsMiniPlayerDisplayed() && this.playingSongsService.getPlayingSong() !== undefined
-            && this.playingSongsService.getPlayingIndex() == data['songId'])) {
+            && this.playingSongsService.getPlayingSong()?.id == data['songId'])) {
             if (this.playingSongsService.getIsPlaying()) {
             this.pauseSong();
           }
@@ -92,7 +92,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
     this.songItemElements.changes.subscribe(songItemRefs => {
       songItemRefs.forEach((songItemRef: { nativeElement: any; }) => {
         const container = songItemRef.nativeElement;
-        const imgElement = container.querySelector('.s-image') as HTMLImageElement;
+        const imgElement = container.querySelector('.song-image') as HTMLImageElement;
         if (imgElement) {
           fac.getColorAsync(imgElement)
             .then(color => {
