@@ -1,29 +1,3 @@
-.song {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    padding: 1em;
-    background-color: grey;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 4em;
-    border-radius: 1em;
-}
-
-.song-data {
-    display: flex;
-    align-items: center;
-    flex-basis: 50%;
-}
-
-.song-image {
-    width: 13em;
-    height: 13em;
-    flex-shrink: 0;
-    margin-right: 1em;
-    border-radius: 1em;
-}
-
 #controls {
     text-align: center;
     flex-basis: 50%;
@@ -46,7 +20,10 @@
     height: 5em;
     border-radius: 10em;
     font-size: medium;
-    border-style: none;
+}
+
+#control-buttons-container > button >  .play-icon {
+    font-size: 2.5em; 
 }
 
 #no-song-messsage {
@@ -58,19 +35,11 @@
     text-align: center;
 }
 
-ol {
-    padding: 0;
-}
-
-li {
-    list-style-type: none;
-}
-
 .playing-song {
     margin-top: 1em;
     margin-bottom: 1em;
-    padding: 0.5em 1em;
-    background-color: grey;
+    padding: 1em;
+    //background-color: grey;
     border-radius: 1em;
     display: flex;
     justify-content: space-between;
@@ -81,27 +50,30 @@ li {
     background-color: lightseagreen;
 }
 
-.playing-song-data {
-    display: flex;
-    align-items: center;
-}
 
 .playing-song-image {
-    width: 7em;
-    height: 7em;
+    width: 20em;
+    height: 20em;
     flex-shrink: 0;
     margin-right: 1em;
     border-radius: 1em;
+    border: solid 3px white;
 }
 
-.playing-song > button {
-    width: 7em;
-    height: 7em;
-    min-width: 7em;
-    border-radius: 1em;
-    font-size: medium;
-    border-style: none;
+.icon{
+    font-size: 2.5em; /* Adjust the size of the icon */
 }
+
+button:hover .fullHeart{
+    color: red; /* Change to your desired hover background color */
+     /* Change cursor to pointer on hover */
+}
+
+.fullHeart {
+  font-variation-settings: 'FILL' 1, 'wght' 700;
+  color: red; /* Optional: makes the heart red */
+}
+
 
 @media screen and (max-width: 1300px) {
     .song {
@@ -137,27 +109,4 @@ li {
     .playing-song-data {
         align-items: center;
     }
-}
-
-.icon{
-    font-size: 2.5em; /* Adjust the size of the icon */
-}
-
-button:hover .icon {
-    color: black; /* Change to your desired hover color */
-}
-
-button:hover {
-    background-color: #f0f0f0; /* Change to your desired hover background color */
-    cursor: pointer; /* Change cursor to pointer on hover */
-}
-
-button:hover .fullHeart{
-    color: red; /* Change to your desired hover background color */
-     /* Change cursor to pointer on hover */
-}
-
-.fullHeart {
-  font-variation-settings: 'FILL' 1, 'wght' 700;
-  color: red; /* Optional: makes the heart red */
 }

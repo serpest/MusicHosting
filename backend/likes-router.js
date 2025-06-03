@@ -1,17 +1,13 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
 
 const {authenticateToken} = require('./token-utils');
 
-const usersDb = require('./users-db');
 const songsDb = require('./songs-db');
 const likesDb = require('./likes-db');
 
 const router = express.Router();
 
-// Check if a song is liked by the user
 router.get('/:songId/is-liked', authenticateToken, (req, res, next) => {
-    console.log('Checking if song is liked by user');
     const userId = req.user.id;
     const songId = req.params.songId;
     likesDb.get(
@@ -24,18 +20,14 @@ router.get('/:songId/is-liked', authenticateToken, (req, res, next) => {
     );
 });
 
-// Like a song
 router.post('/:songId/like', authenticateToken, (req, res, next) => {
-    console.log('Liking song');
     const userId = req.user.id;
     const songId = req.params.songId;
 
-    // Check if the song exists
     songsDb.get('SELECT id FROM songs WHERE id = ?', [songId], (err, song) => {
         if (err) return next(err);
         if (!song) return res.status(404).json({ error: 'Song not found' });
 
-        // Insert like
         likesDb.run(
             'INSERT INTO likes (user_id, song_id) VALUES (?, ?)',
             [userId, songId],
@@ -47,13 +39,10 @@ router.post('/:songId/like', authenticateToken, (req, res, next) => {
     });
 });
 
-// Unlike a song
 router.post('/:songId/unlike', authenticateToken, (req, res, next) => {
-    console.log('Unliking song');
     const userId = req.user.id;
     const songId = req.params.songId;
 
-    // Check if the like exists
     likesDb.get(
         'SELECT id FROM likes WHERE user_id = ? AND song_id = ?',
         [userId, songId],
@@ -61,7 +50,6 @@ router.post('/:songId/unlike', authenticateToken, (req, res, next) => {
             if (err) return next(err);
             if (!row) return res.status(404).json({ error: 'Like not found' });
 
-            // Delete like
             likesDb.run(
                 'DELETE FROM likes WHERE id = ?',
                 [row.id],
@@ -74,18 +62,15 @@ router.post('/:songId/unlike', authenticateToken, (req, res, next) => {
     );
 });
 
-// Get all liked songs for the authenticated user
 router.get('/playlist-liked-songs', authenticateToken, (req, res, next) => {
     const userId = req.user.id;
     
-    // 1. Prendi tutti i song_id likati dall'utente
     likesDb.all('SELECT song_id FROM likes WHERE user_id = ?', [userId], (err, rows) => {
         if (err) return next(err);
         const songIds = rows.map(r => r.song_id);
         if (songIds.length === 0) {
             return res.status(200).json({ songs: [] });
         }
-        // 2. Prendi i dettagli delle canzoni da songsDb
         const placeholders = songIds.map(() => '?').join(',');
         songsDb.all(
             `SELECT id, title, artist, album, genre, release_year FROM songs WHERE id IN (${placeholders})`,
@@ -93,10 +78,81 @@ router.get('/playlist-liked-songs', authenticateToken, (req, res, next) => {
             (err, songs) => {
                 if (err) return next(err);
                 res.status(200).json({ songs: songs });
-                console.log('Fetching liked songs for user');
             }
         );
     });
 });
+
+router.get('/most-liked/:n', (req, res, next) => {
+    const n = parseInt(req.params.n, 10);
+    if (isNaN(n) || n <= 0) {
+        return res.status(400).json({ error: 'Invalid number of songs requested' });
+    }
+
+    likesDb.all(
+        `SELECT song_id, COUNT(*) as like_count 
+         FROM likes 
+         GROUP BY song_id 
+         ORDER BY like_count DESC 
+         LIMIT ?`,
+        [n],
+        (err, rows) => {
+            if (err) return next(err);
+            const songIds = rows.map(r => r.song_id);
+            if (songIds.length === 0) {
+                return res.status(200).json({ songs: [] });
+            }
+            const placeholders = songIds.map(() => '?').join(',');
+            songsDb.all(
+                `SELECT id, title, artist, album, genre, release_year 
+                 FROM songs 
+                 WHERE id IN (${placeholders})`,
+                songIds,
+                (err, songs) => {
+                    if (err) return next(err);
+                    res.status(200).json({ songs: songs });
+                    
+                }
+            );
+        }
+    );
+});
+
+router.post('/likes-per-song', (req, res, next) => {
+    const { songIds } = req.body;
+    if (!Array.isArray(songIds) || songIds.length === 0) {
+        return res.json({});
+    }
+    const placeholders = songIds.map(() => '?').join(',');
+    likesDb.all(
+        `SELECT song_id, COUNT(*) as likes FROM likes WHERE song_id IN (${placeholders}) GROUP BY song_id`,
+        songIds,
+        (err, rows) => {
+            if (err) return next(err);
+            // Convert to { songId: likes, ... }
+            const result = {};
+            for (const row of rows) {
+                result[row.song_id] = row.likes;
+            }
+            res.json(result);
+        }
+    );
+});
+
+// num of likes per song
+router.get('/:songId/count', (req, res, next) => {
+    const songId = req.params.songId;
+    likesDb.get(
+        'SELECT COUNT(*) as likes FROM likes WHERE song_id = ?',
+        [songId],
+        (err, row) => {
+            if (err) return next(err);
+            res.json({ likes: row.likes });
+        }
+    );
+    
+});
+
+
 
 module.exports = router;

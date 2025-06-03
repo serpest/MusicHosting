@@ -4,11 +4,13 @@ import { IonApp, IonButton, IonButtons, IonContent, IonHeader, IonMenu, IonMenuB
 import { MiniPlayerComponent } from './mini-player/mini-player.component';
 import { UserService } from './user.service';
 import { TokenService } from './token.service';
+import { CommonModule } from '@angular/common'; 
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  imports: [IonFooter, IonApp, IonRouterOutlet, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonTitle, IonToolbar, IonButton, RouterModule, IonMenuToggle, MiniPlayerComponent],
+  imports: [ CommonModule, IonFooter, IonApp, IonRouterOutlet, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonTitle, IonToolbar, IonButton, RouterModule, IonMenuToggle, MiniPlayerComponent
+  ],
 })
 export class AppComponent implements OnInit {
   isLoggedIn = false;
@@ -16,7 +18,7 @@ export class AppComponent implements OnInit {
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
   ngOnInit() {
-    this.userService.isLoggedIn$.subscribe(status => {
+    this.userService.isLoggedInObservable.subscribe(status => {
       this.isLoggedIn = status;
     });
     this.userService.checkAuth(); // Check login status on app start

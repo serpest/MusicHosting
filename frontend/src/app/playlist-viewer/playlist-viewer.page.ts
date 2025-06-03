@@ -156,6 +156,7 @@ export class PlaylistViewerPage implements ViewWillEnter {
       this.playlistService.addSongToPlaylist(this.playlist!.id, this.selectedSongToAdd.id).subscribe({
         next: () => {
           this.playlist!.songs.push(this.selectedSongToAdd!);
+          this.caricaPlaylist(this.playlist!.id);
           this.selectedSongToAdd = undefined;
         },
         error: (error) => {
@@ -194,6 +195,7 @@ export class PlaylistViewerPage implements ViewWillEnter {
       this.playlistService.removeSongFromPlaylist(this.playlist!.id, this.selectedSongToRemove.id).subscribe({
         next: () => {
           this.playlist!.songs = this.playlist!.songs.filter(song => song.id !== this.selectedSongToRemove!.id);
+          this.caricaPlaylist(this.playlist!.id);
           this.selectedSongToRemove = undefined;
         },
         error: () => {

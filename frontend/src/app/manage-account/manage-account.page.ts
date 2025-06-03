@@ -57,10 +57,36 @@ export class ManageAccountPage implements ViewWillEnter {
     this.errorMessage = '';
     this.userService.changeName(this.changeNameForm.value.name ?? '').subscribe({
       next: () => {
-        this.successMessage = 'Name changed successfully!';
+        this.alertController.create({
+          header: 'Success',
+          message: 'Name changed successfully',
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigate(['manage-account']);
+              }
+            }
+          ]
+        }).then(alert => {
+          alert.present();
+        });
       },
       error: () => {
-        this.errorMessage = 'Error changing name.';
+        this.alertController.create({
+          header: 'Error',
+          message: 'Failed to change name. Please try again.',
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigate(['manage-account']);
+              }
+            }
+          ]
+        }).then(alert => {
+          alert.present();
+        });
       }
     });
   }

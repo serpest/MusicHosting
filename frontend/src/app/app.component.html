@@ -1,4 +1,3 @@
-
 <ion-menu side="start" contentId="main-content">
   <ion-header>
     <ion-toolbar>
@@ -7,6 +6,7 @@
   </ion-header>
   <ion-content class="ion-padding">
     <ion-menu-toggle>
+      <ion-button expand="block" [routerLink]="['/welcome']">Home</ion-button>
       <ion-button expand="block" [routerLink]="['/discover-songs']">Discover songs</ion-button>
       <ion-button expand="block" [routerLink]="['/search-songs']">Search songs</ion-button>
       <ion-button expand="block" [routerLink]="['/my-songs']">My songs</ion-button>
@@ -15,9 +15,12 @@
       <ion-button expand="block" [routerLink]="['/my-playlists']">My playlists</ion-button>
       <ion-button expand="block" [routerLink]="['/create-playlist']">Create playlist</ion-button>
       <ion-button expand="block" [routerLink]="['/manage-account']">Manage account</ion-button>
-      <ion-button *ngIf="!isLoggedIn" expand="block" [routerLink]="['/auth/login']">Login</ion-button>
-      <ion-button *ngIf="!isLoggedIn" expand="block" [routerLink]="['/auth/register']">Register</ion-button>
-      <ion-button *ngIf="isLoggedIn" expand="block" (click)="logout()">Logout</ion-button>
+      @if(!isLoggedIn) {
+        <ion-button expand="block" [routerLink]="['/auth/login']">Login</ion-button>
+        <ion-button expand="block" [routerLink]="['/auth/register']">Register</ion-button>
+      } @else {
+        <ion-button expand="block" (click)="logout()">Logout</ion-button>
+      }
     </ion-menu-toggle>
   </ion-content>
 </ion-menu>
@@ -25,7 +28,7 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title>MusicHosting</ion-title>
+      <ion-title style="cursor:pointer" [routerLink]="['/welcome']">MusicHosting</ion-title>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -36,5 +39,5 @@
   </ion-app>
   <ion-footer>
       <app-mini-player></app-mini-player>
-    </ion-footer>
+  </ion-footer>
 </div>

@@ -11,17 +11,17 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    <h1>Song player</h1>
     @if (isExisting) {
-      <div class="song">
+      <div class="playing-song">
           <div class="song-data">
-              <img class="song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <img class="playing-song-image" src="http://localhost:3000/songs/id/{{ song?.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
               <div class="song-details">
-                  <h2>{{ song?.title }}</h2>
+                  <h1>{{ song?.title }}</h1>
                   <p><b>Artist:</b> {{ song?.artist }}</p>
                   <p><b>Album:</b> {{ song?.album }}</p>
                   <p><b>Genre:</b> {{ song?.genre }}</p>
                   <p><b>Release year:</b> {{ song?.releaseYear }}</p>
+                  <p><b>Likes :</b> {{ likes || 0 }}</p>
               </div>
           </div>
           <!-- TODO: Adapt for mobile -->
@@ -30,34 +30,34 @@
               <input type="range" id="progress-bar" min="0" [max]="duration" [value]="currentTime" (input)="seek($event)" />
               <div id="control-buttons-container">
                   @if (playingSongs.length > 1) {
-                    <button (click)="playPreviousSong()">
-                      <span class="material-symbols-outlined icon">skip_previous</span>
+                    <button (click)="playPreviousSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon">skip_previous</span>
                     </button>
                   }
                   @if(isPlaying) {
-                    <button (click)="pauseSong()">
-                      <span class="material-symbols-outlined icon">pause</span>
+                    <button (click)="pauseSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon">pause</span>
                     </button>
                   } @else {
-                    <button (click)="playSong()">
-                      <span class="material-symbols-outlined icon">play_arrow</span>
+                    <button (click)="playSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon">play_arrow</span>
                     </button>
                   }
                   @if (playingSongs.length > 1) {
-                    <button (click)="playNextSong()">
-                      <span class="material-symbols-outlined icon">skip_next</span>
+                    <button (click)="playNextSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon">skip_next</span>
                     </button>
                   }
-                  <button (click)="restartSong()">
-                    <span class="material-symbols-outlined icon">replay</span>
+                  <button (click)="restartSong()" class="play-button">
+                    <span class="material-symbols-outlined play-icon">replay</span>
                   </button>
                   @if (isLiked) {
-                    <button (click)="unlikeSong()">
-                      <span class="material-symbols-outlined icon fullHeart">favorite</span>
+                    <button (click)="unlikeSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon fullHeart">favorite</span>
                     </button>
                   } @else {
-                    <button (click)="likeSong()">
-                      <span class="material-symbols-outlined icon">favorite</span>
+                    <button (click)="likeSong()" class="play-button">
+                      <span class="material-symbols-outlined play-icon">favorite</span>
                     </button>
                   }
                   
@@ -70,18 +70,21 @@
     }
     @if (playingSongs.length > 0) {
       <h2>Playing songs</h2>
-      <ol>
+      <ol class="list">
         @for (s of playingSongs; track s.id) {
-          <li class="playing-song" [ngClass]="{'playing-song-active': s.id == song?.id}">
-            <div class="playing-song-data">
-              <img class="playing-song-image" src="http://localhost:3000/songs/id/{{ s.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
-              <div class="playing-song-details">
+          <li class="song" [ngClass]="{'playing-song-active': s.id == song?.id}">
+            <div class="song-data">
+              <img class="song-image" src="http://localhost:3000/songs/id/{{ s.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+              <div class="song-details">
                   <h2>{{ s.title }}</h2>
                   <p><b>Artist:</b> {{ s.artist }}</p>
                   <p><b>Album:</b> {{ s.album }}</p>
+                  
               </div>
             </div>
-                <button (click)="playAnotherSong(s.id)">Play</button>
+              <button (click)="playAnotherSong(s.id)" class ="play-button">
+                <span class="material-symbols-outlined play-icon">play_arrow</span>
+              </button>
           </li>
         }
       </ol>

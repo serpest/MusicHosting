@@ -25,6 +25,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
   playingSongs: Song[] = [];
   isLiked: boolean = false;
   isPlaying: boolean = false;
+  likes: number = 0;
 
   constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService, private router: Router,
               private playingSongsService: PlayingSongsService, private alertController: AlertController) {}
@@ -70,6 +71,11 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
                 this.isLiked = res.liked;
               }
             });
+            this.songService.getLikesCount(this.song.id).subscribe({
+              next: res => {
+                this.likes = res.likes;
+              }
+            });
           });
         });
       },
@@ -104,6 +110,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
         console.error('[ERROR] Error playing audio:', error);
       });
       this.playingSongsService.setIsPlaying(true);
+      this.isPlaying = true;
     }
   }
 
@@ -111,6 +118,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
     if (this.playingSongsService.getAudio()) {
       this.playingSongsService.getAudio().pause();
       this.playingSongsService.setIsPlaying(false);
+      this.isPlaying = false;
     }
   }
 
@@ -158,10 +166,10 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
   }
 
   likeSong() {
-    console.log('Like song:', this.song?.id); 
     this.songService.likeSong(this.song?.id || 0).subscribe({
       next: () => {
         this.isLiked = true;
+        this.likes++;
       },
       error: (error) => {
         console.error('Error liking song:', error);
@@ -170,10 +178,10 @@ export class SongPlayerPage implements OnInit, ViewWillLeave {
   }
 
   unlikeSong() {
-    console.log('Unlike song:', this.song?.id);
     this.songService.unlikeSong(this.song?.id || 0).subscribe({
       next: () => {
         this.isLiked = false;
+        this.likes--;
       },
       error: (error) => {
         console.error('Error unliking song:', error);

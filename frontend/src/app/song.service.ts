@@ -60,4 +60,17 @@ export class SongService {
     return this.http.post(`${this.baseUrl}/likes/${songId}/unlike`, {});
   }
 
+  getMostLikedSongs(count: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/likes/most-liked/${count}`);
+  }
+
+  getLikesPerSong(songs: Song[]): Observable<{ [songId: number]: number }> {
+    const songIds = songs.map(song => song.id);
+    return this.http.post<{ [songId: number]: number }>(`${this.baseUrl}/likes/likes-per-song`, { songIds });
+  }
+
+  getLikesCount(songId: number): Observable<{ likes: number }> {
+    return this.http.get<{ likes: number }>(`${this.baseUrl}/likes/${songId}/count`);
+  }
+
 }

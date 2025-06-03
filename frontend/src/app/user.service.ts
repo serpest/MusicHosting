@@ -8,11 +8,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 
 export class UserService {
+  [x: string]: any;
 
   private baseUrl = 'http://localhost:3000';
 
   private loggedIn = new BehaviorSubject<boolean>(false);
-  isLoggedIn$ = this.loggedIn.asObservable();
+  isLoggedInObservable = this.loggedIn.asObservable();
 
   constructor(private http: HttpClient) { }
 

@@ -1,23 +1,30 @@
-ol {
+.list {
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-li {
+.song {
     list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 45%;
+    margin: 2%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.song:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .song, #no-songs-messsage {
     margin-top: 1em;
     margin-bottom: 1em;
     padding: 1em;
-    background-color: grey;
+    background-color: rgb(0, 60, 255);
     border-radius: 1em;
-}
-
-.song {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 }
 
 #no-songs-messsage {
@@ -35,15 +42,63 @@ li {
     flex-shrink: 0;
     margin-right: 1em;
     border-radius: 1em;
+    border: solid 3px white;
 }
 
-.song > button {
-    width: 10em;
-    height: 10em;
-    border-radius: 5em;
+.play-button{
+    width: 9em;
+    height: 9em;
+    border-radius: 10em;
     font-size: medium;
-    border-style: none;
+    border: solid 3px black;
+    background-color: blue;
     
+}
+
+.play-button:hover {
+    background-color: white; 
+    cursor: pointer; 
+    animation: pulse 1s;
+}
+
+.play-button:hover .play-icon {
+    color: blue; 
+    animation: icon-bounce 1s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+    50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 16px rgba(0,60,255,0.2);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+}
+
+@keyframes icon-bounce {
+    0% {
+        transform: translateY(0);
+    }
+    30% {
+        transform: translateY(-8px);
+    }
+    60% {
+        transform: translateY(4px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.play-icon {
+  font-size: 5rem; 
+  vertical-align: middle;
 }
 
 .material-symbols-outlined {
@@ -53,11 +108,6 @@ li {
         'GRAD' 0,
         'opsz' 40;
     font-size: 5em;
-}
-
-
-.song > button:hover {
-    background-color: #d3d3d3;
 }
 
 @media screen and (max-width: 800px) {
@@ -84,18 +134,4 @@ li {
     .song-image {
         margin-right: 0;
     }
-}
-
-.play-icon {
-  font-size: 5rem; /* or any size you prefer */
-  vertical-align: middle;
-}
-
-.play-button:hover .play-icon {
-    color: black; /* Change to your desired hover color */
-}
-
-.play-button:hover {
-    background-color: #f0f0f0; /* Change to your desired hover background color */
-    cursor: pointer; /* Change cursor to pointer on hover */
 }
