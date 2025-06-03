@@ -101,10 +101,9 @@ export class PlaylistViewerPage implements ViewWillEnter {
     });
     this.playlistCreator = 'Liked Songs';
     this.isExisting = true;
-    this.isMine = true;
     this.userService.validateToken().subscribe({
       next: (data) => {
-        this.isMine = true;
+        this.isMine = false;
         this.songService.getSongs().subscribe({
           next: (songsData: any) => {
             this.allSongs = songsData.songs.map((songData: any) => Song.fromJson(songData));
