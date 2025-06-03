@@ -13,7 +13,7 @@ import { PlayingSongsService } from '../playing.songs.service';
   templateUrl: './manage-account.page.html',
   styleUrls: ['./manage-account.page.scss'],
   standalone: true,
-  imports: [ IonContent, IonHeader, IonText, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [ IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
 export class ManageAccountPage implements ViewWillEnter {
   successMessage = '';

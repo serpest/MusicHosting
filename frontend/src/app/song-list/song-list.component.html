@@ -1,8 +1,8 @@
 <ol class="list">
   @for (song of sortedSongs(); track song.id) {
-    <li class="song">
+    <li #songItem class="song">
       <div class="song-data">
-        <img class="song-image" src="http://localhost:3000/songs/id/{{ song.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" />
+        <img class="song-image" src="http://localhost:3000/songs/id/{{ song.id }}/album_picture" onerror="this.src='../assets/img/default-song-image.png';" crossorigin="anonymous" />
         <div class="song-details">
             <h2>{{ song.title }}</h2>
             <p><b>Artist:</b> {{ song.artist }}</p>
