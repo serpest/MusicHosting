@@ -31,8 +31,10 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
   isPlaying: boolean = false;
   likes: number = 0;
 
-  constructor(private route: ActivatedRoute, private songService: SongService, private userService: UserService, private router: Router,
-              private playingSongsService: PlayingSongsService, private alertController: AlertController) {}
+  enableMiniPlayerOnLeave: boolean = true;
+
+  constructor(private route: ActivatedRoute, private songService: SongService, private router: Router,
+              private playingSongsService: PlayingSongsService) {}
 
   ngOnInit() {
     this.route.params.subscribe(data => {
@@ -84,13 +86,14 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
   }
 
   ionViewWillLeave() {
-    if (this.isExisting) {
+    if (this.isExisting && this.enableMiniPlayerOnLeave) {
         this.playingSongsService.setIsMiniPlayerDisplayed(true);
     }
   }
 
   ngAfterViewInit() {
     this.playingSongsService.setIsMiniPlayerDisplayed(false);
+    this.enableMiniPlayerOnLeave = false;
     const fac = new FastAverageColor();
     this.songItemElements.changes.subscribe(songItemRefs => {
       songItemRefs.forEach((songItemRef: { nativeElement: any; }) => {
@@ -152,6 +155,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
 
   playAnotherSong(songId: number) {
     this.pauseSong();
+    this.enableMiniPlayerOnLeave = false;
     this.router.navigate(['/song-player', songId]);
   }
 
