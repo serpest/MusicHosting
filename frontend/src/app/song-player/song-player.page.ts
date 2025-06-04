@@ -93,7 +93,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
 
   ngAfterViewInit() {
     this.playingSongsService.setIsMiniPlayerDisplayed(false);
-    this.enableMiniPlayerOnLeave = false;
+    this.enableMiniPlayerOnLeave = true;
     const fac = new FastAverageColor();
     this.songItemElements.changes.subscribe(songItemRefs => {
       songItemRefs.forEach((songItemRef: { nativeElement: any; }) => {
