@@ -44,15 +44,15 @@ router.post('/:songId/unlike', authenticateToken, (req, res, next) => {
     const songId = req.params.songId;
 
     likesDb.get(
-        'SELECT id FROM likes WHERE user_id = ? AND song_id = ?',
+        'SELECT 1 FROM likes WHERE user_id = ? AND song_id = ?',
         [userId, songId],
         (err, row) => {
             if (err) return next(err);
             if (!row) return res.status(404).json({ error: 'Like not found' });
 
             likesDb.run(
-                'DELETE FROM likes WHERE id = ?',
-                [row.id],
+                'DELETE FROM likes WHERE user_id = ? AND song_id = ?',
+                [userId, songId],
                 function(err) {
                     if (err) return next(err);
                     res.status(200).json({ message: 'Song unliked successfully' });
