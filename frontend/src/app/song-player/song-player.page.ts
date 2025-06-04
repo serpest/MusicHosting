@@ -41,6 +41,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
       this.songService.getSongById(data['songId']).subscribe((songData: any) => {
         this.isExisting = true;
         this.song = Song.fromJson(songData.song);
+        console.log(this.playingSongsService.getIsMiniPlayerDisplayed(), this.playingSongsService.getPlayingSong(), this.playingSongsService.getPlayingSong()?.id, data['songId']);
         if (!(this.playingSongsService.getIsMiniPlayerDisplayed() && this.playingSongsService.getPlayingSong() !== undefined
             && this.playingSongsService.getPlayingSong()?.id == data['songId'])) {
           if (this.playingSongsService.getIsPlaying()) {
@@ -92,7 +93,6 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.playingSongsService.setIsMiniPlayerDisplayed(false);
     this.enableMiniPlayerOnLeave = true;
     const fac = new FastAverageColor();
     this.songItemElements.changes.subscribe(songItemRefs => {
