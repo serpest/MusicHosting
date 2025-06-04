@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  styleUrls: ['./app.component.scss'],
   imports: [ CommonModule, IonFooter, IonApp, IonRouterOutlet, IonButtons, IonContent, IonHeader, IonMenu, IonMenuButton, IonTitle, IonToolbar, IonButton, RouterModule, IonMenuToggle, MiniPlayerComponent
   ],
 })

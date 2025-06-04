@@ -25,6 +25,7 @@ export class MyPlaylistsPage implements ViewWillEnter {
   ionViewWillEnter() {
     this.playlistService.getMyPlaylists().subscribe((playlistsData: any) => {
       this.myPlaylists = playlistsData.playlists.map((playlistData: any) => Playlist.fromJsonWithoutCreatorAndSongs(playlistData));
+      this.myPlaylists.unshift(new Playlist(-1, 'Liked Songs'));
     });
   }
 

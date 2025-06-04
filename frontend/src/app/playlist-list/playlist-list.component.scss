@@ -25,15 +25,6 @@ li {
     text-align: center;
 }
 
-.playlist > button {
-    width: 13em;
-    min-width: 13em;
-    height: 13em;
-    border-radius: 1em;
-    font-size: medium;
-    border-style: none;
-}
-
 @media screen and (max-width: 600px) {
     .playlist {
         flex-direction: column;

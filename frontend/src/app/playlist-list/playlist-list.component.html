@@ -1,12 +1,12 @@
-<ol>
-  <li class="playlist">
-    <h2>Liked songs</h2>
-    <button (click)="openLikedSongs()">Open</button>
-  </li>
+<ol class="list">
   @for (playlist of playlists(); track playlist.id) {
     <li class="playlist">
       <h2>{{ playlist.title }}</h2>
-      <button (click)="open(playlist.id)">Open</button>
+      <button (click)="open(playlist.id)" class="play-button">
+        <span class="material-symbols-outlined play-icon">queue_music</span>
+      </button>
     </li>
+  } @empty {
+    <li id="no-playlists-messsage">No playlists available</li>
   }
 </ol>
