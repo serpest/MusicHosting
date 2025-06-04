@@ -28,12 +28,15 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title class="logo-title" [routerLink]="['/welcome']">
-        <img src="assets/img/logo.png" alt="Logo">
-      </ion-title>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
+      <ion-title class="logo-title ion-text-center" [routerLink]="['/welcome']">
+        <img src="assets/img/logo.png" alt="Logo">
+      </ion-title>
+      <ion-button style="visibility: hidden;" slot="end">
+        <!-- Segnaposto per bilanciare menu-button -->
+      </ion-button>
     </ion-toolbar>
   </ion-header>
   <ion-app>

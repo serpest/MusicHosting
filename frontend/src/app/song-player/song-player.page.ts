@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, ElementRef, input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter, ViewWillLeave } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillLeave } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Song } from '../song.model';
 import { SongService } from '../song.service';
@@ -98,7 +98,7 @@ export class SongPlayerPage implements OnInit, ViewWillLeave, AfterViewInit {
         if (imgElement) {
           fac.getColorAsync(imgElement)
             .then(color => {
-              container.style.backgroundColor = color.rgba;
+              container.style.backgroundImage = `linear-gradient(to bottom, ${color.rgba}, #121212)`;
               container.style.color = color.isDark ? '#fff' : '#000';
             })
             .catch(e => {

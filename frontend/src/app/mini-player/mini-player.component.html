@@ -1,9 +1,16 @@
 @if (isDisplayed) {
   <div #songItem class="mini-player">
         <div class="song-details">
-            <h2>{{ song?.artist + " - " + song?.title }}</h2>
+            @if ((song?.artist + " - " + song?.title).length <= 30) {
+              <h2>{{ song?.artist + " - " + song?.title }}</h2>
+            } @else {
+              @if (song?.title!.length > 30) {
+                <h2>{{ song?.title!.substring(0, 27) + "..." }}</h2>
+              } @else {
+                <h2>{{ song?.title }}</h2>
+              }
+            }
         </div>
-      <!-- TODO: Adapt for mobile -->
       <div id="control-buttons-container">
           @if (playingSongs.length > 1) {
             <button (click)="playPreviousSong()" class = "play-button">

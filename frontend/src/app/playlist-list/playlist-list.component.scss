@@ -25,7 +25,7 @@ li {
     text-align: center;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 1000px) {
     .playlist {
         flex-direction: column;
     }
@@ -33,5 +33,11 @@ li {
     .playlist > button {
         height: 5em;
         margin-top: 1em;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .playlist {
+        width: 100%;
     }
 }

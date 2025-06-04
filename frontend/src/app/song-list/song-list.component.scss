@@ -31,3 +31,9 @@ li {
         margin-right: 0;
     }
 }
+
+@media screen and (max-width: 600px) {
+    .song {
+        width: 100%;
+    }
+}
