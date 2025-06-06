@@ -20,7 +20,7 @@ export class TokenService {
   }
 
   public removeToken(): void {
-    sessionStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
 }
