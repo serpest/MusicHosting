@@ -9,15 +9,15 @@
       <ion-button expand="block" [routerLink]="['/welcome']">Home</ion-button>
       <ion-button expand="block" [routerLink]="['/discover-songs']">Discover songs</ion-button>
       <ion-button expand="block" [routerLink]="['/search-songs']">Search songs</ion-button>
-      <ion-button expand="block" [routerLink]="['/my-songs']">My songs</ion-button>
-      <ion-button expand="block" [routerLink]="['/upload-song']">Upload song</ion-button>
       <ion-button expand="block" [routerLink]="['/discover-playlists']">Discover playlists</ion-button>
-      <ion-button expand="block" [routerLink]="['/my-playlists']">My playlists</ion-button>
-      <ion-button expand="block" [routerLink]="['/create-playlist']">Create playlist</ion-button>
       @if(!isLoggedIn) {
         <ion-button expand="block" [routerLink]="['/auth/login']">Login</ion-button>
         <ion-button expand="block" [routerLink]="['/auth/register']">Register</ion-button>
       } @else {
+        <ion-button expand="block" [routerLink]="['/my-songs']">My songs</ion-button>
+        <ion-button expand="block" [routerLink]="['/upload-song']">Upload song</ion-button>
+        <ion-button expand="block" [routerLink]="['/my-playlists']">My playlists</ion-button>
+        <ion-button expand="block" [routerLink]="['/create-playlist']">Create playlist</ion-button>
         <ion-button expand="block" [routerLink]="['/manage-account']">Manage account</ion-button>
         <ion-button expand="block" (click)="logout()">Logout</ion-button>
       }
