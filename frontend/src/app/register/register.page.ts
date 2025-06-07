@@ -25,6 +25,7 @@ export class RegisterPage implements ViewWillEnter {
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
+    this.registerForm.reset();
     this.userService.validateToken().subscribe({
       next: () => {
         this.alertController.create({

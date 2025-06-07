@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AlertController, IonAlert, IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
+import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { Song } from '../song.model';
-import { SongService } from '../song.service';
-import { UserService } from '../user.service';
 import { Playlist } from '../playlist.model';
 import { PlaylistService } from '../playlist.service';
 
@@ -16,13 +13,17 @@ import { PlaylistService } from '../playlist.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class CreatePlaylistPage {
+export class CreatePlaylistPage implements ViewWillEnter {
 
   playlistForm = new FormGroup({
     title: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)])
   });
 
-  constructor(private userService: UserService, private playlistService: PlaylistService, private router: Router, private alertController: AlertController) {}
+  constructor(private playlistService: PlaylistService, private router: Router, private alertController: AlertController) {}
+
+  ionViewWillEnter() {
+    this.playlistForm.reset();
+  }
 
   submit() {
     const playlist = new Playlist(

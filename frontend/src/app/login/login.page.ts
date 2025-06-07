@@ -24,6 +24,7 @@ export class LoginPage implements ViewWillEnter {
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
 
   ionViewWillEnter() {
+    this.loginForm.reset();
     this.userService.validateToken().subscribe({
       next: () => {
         this.alertController.create({

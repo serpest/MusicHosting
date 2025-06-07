@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { AlertController, IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { UserService } from '../user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -12,7 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class ResetPasswordPage {
+export class ResetPasswordPage implements ViewWillEnter {
 
   resetPasswordForm = new FormGroup({
     otp: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(6), Validators.maxLength(6)]),
@@ -20,6 +20,10 @@ export class ResetPasswordPage {
   });
 
   constructor(private userService: UserService, private router: Router, private alertController: AlertController, private activatedRoute: ActivatedRoute) {}
+
+  ionViewWillEnter() {
+    this.resetPasswordForm.reset();
+  }
 
   submit() {
     this.activatedRoute.queryParams.subscribe(params => {

@@ -16,7 +16,7 @@ import { PlayingSongsService } from '../playing.songs.service';
   standalone: true,
   imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class UploadSongPage {
+export class UploadSongPage implements ViewWillEnter {
 
   songForm = new FormGroup({
     title: new FormControl<NonNullable<string>>('', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]),
@@ -30,7 +30,11 @@ export class UploadSongPage {
   audioFile: File | undefined;
   albumPictureFile: File | undefined;
 
-  constructor(private userService: UserService, private songService: SongService, private router: Router, private alertController: AlertController, private playingSongsService: PlayingSongsService) {}
+  constructor(private songService: SongService, private router: Router, private alertController: AlertController, private playingSongsService: PlayingSongsService) {}
+
+  ionViewWillEnter() {
+    this.songForm.reset();
+  }
 
   audioFileChange(event: Event) {
     const target = event.target as HTMLInputElement;
