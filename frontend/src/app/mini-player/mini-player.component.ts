@@ -1,10 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { PlayingSongsService } from '../playing.songs.service';
 import { Song } from '../song.model';
-import { AlertController, ViewWillEnter } from '@ionic/angular';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SongService } from '../song.service';
-import { UserService } from '../user.service';
+import { Router } from '@angular/router';
 import { FastAverageColor } from 'fast-average-color';
 
 @Component({

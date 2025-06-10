@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonToolbar, ViewWillEnter } from '@ionic/angular/standalone';
 import { Playlist } from '../playlist.model';
 import { PlaylistService } from '../playlist.service';
-import { Song } from '../song.model';
-import { SongListComponent } from "../song-list/song-list.component";
 import { PlaylistListComponent } from "../playlist-list/playlist-list.component";
 
 @Component({

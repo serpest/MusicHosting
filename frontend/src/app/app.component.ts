@@ -5,6 +5,7 @@ import { MiniPlayerComponent } from './mini-player/mini-player.component';
 import { UserService } from './user.service';
 import { TokenService } from './token.service';
 import { CommonModule } from '@angular/common'; 
+import { PlayingSongsService } from './playing.songs.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
 export class AppComponent implements OnInit {
   isLoggedIn = false;
 
-  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController) {}
+  constructor(private userService: UserService, private tokenService: TokenService, private router: Router, private alertController: AlertController,
+                private playingSongsService: PlayingSongsService) {}
 
   ngOnInit() {
     this.userService.isLoggedInObservable.subscribe(status => {
@@ -28,6 +30,8 @@ export class AppComponent implements OnInit {
   logout() {
     this.tokenService.removeToken();
     this.userService.setLoggedIn(false);
+    this.playingSongsService.setIsMiniPlayerDisplayed(false);
+    this.router.navigate(['']);
     this.alertController.create({
       header: 'Success',
       message: 'Logout successful',
@@ -35,7 +39,7 @@ export class AppComponent implements OnInit {
         {
           text: 'Ok',
           handler: () => {
-            this.router.navigate(['']);
+            this.playingSongsService.setIsMiniPlayerDisplayed(false);
           }
         }
       ]

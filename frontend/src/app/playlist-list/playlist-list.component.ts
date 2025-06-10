@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { Playlist } from '../playlist.model';
 import { Router } from '@angular/router';
 
